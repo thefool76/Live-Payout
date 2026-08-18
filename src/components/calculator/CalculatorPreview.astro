@@ -1,0 +1,378 @@
+---
+import { usWhatnotFeeSchedule } from "../../features/whatnot/fee-schedule";
+import { Button } from "@/components/ui/button";
+import { InputGroup, InputGroupAddon, InputGroupInput, InputGroupText } from "@/components/ui/input-group";
+import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
+import { MessageCircleQuestion } from "@/components/animate-ui/icons/message-circle-question";
+import { MessageSquareShare } from "@/components/animate-ui/icons/message-square-share";
+import { CalculatorIcon, PrinterIcon } from "lucide-react";
+
+const policyUrl = usWhatnotFeeSchedule.sourceUrl;
+const rates = {
+  standard: usWhatnotFeeSchedule.standardCommissionRate,
+  coins: usWhatnotFeeSchedule.coinsCommissionRate,
+  pallets: usWhatnotFeeSchedule.wholesalePalletsCommissionRate,
+  processing: usWhatnotFeeSchedule.processingRate,
+  processingFixedCents: usWhatnotFeeSchedule.processingFixedCents,
+  highValueThresholdCents: usWhatnotFeeSchedule.highValueCommissionThresholdCents,
+};
+---
+
+<section class="calculator-section" id="calculator" aria-labelledby="calculator-title" data-calculator data-rates={JSON.stringify(rates)}>
+  <div class="shell">
+    <div class="tool-label"><span>Free seller tool</span><span>US fees · verified 18 Aug 2026</span></div>
+    <div class="calculator-grid">
+      <form class="calculator-form" aria-label="Whatnot payout calculator">
+        <div class="form-heading"><p class="eyebrow">Start with the sale</p><h2 id="calculator-title">Know the number before you run the show.</h2></div>
+
+        <div class="mode-switch" role="group" aria-label="Calculator mode">
+          <Button type="button" variant="ghost" className="is-selected" aria-pressed="true" data-mode="payout"><CalculatorIcon data-icon="inline-start" />Calculate payout</Button>
+          <Button type="button" variant="ghost" aria-pressed="false" data-mode="price">Find sale price</Button>
+        </div>
+
+        <div class="field" data-only="payout">
+          <label for="sale-price">Item sale price <span>USD</span></label>
+          <InputGroup className="input-wrap"><InputGroupAddon><InputGroupText>$</InputGroupText></InputGroupAddon><InputGroupInput id="sale-price" name="salePrice" type="number" min="0" max="1000000" step="0.01" inputMode="decimal" value="50.00" data-input="salePrice" /></InputGroup>
+        </div>
+
+        <div class="field" data-only="price" hidden>
+          <label for="target-profit">Profit you want <span>After item cost and fees</span></label>
+          <InputGroup className="input-wrap"><InputGroupAddon><InputGroupText>$</InputGroupText></InputGroupAddon><InputGroupInput id="target-profit" name="targetProfit" type="number" min="0" max="1000000" step="0.01" inputMode="decimal" value="20.00" data-input="targetProfit" /></InputGroup>
+        </div>
+
+        <div class="two-up">
+          <div class="field"><label for="buyer-shipping">Buyer shipping <span>Processing base</span></label><InputGroup className="input-wrap"><InputGroupAddon><InputGroupText>$</InputGroupText></InputGroupAddon><InputGroupInput id="buyer-shipping" name="buyerShipping" type="number" min="0" max="100000" step="0.01" inputMode="decimal" value="5.00" data-input="buyerShipping" /></InputGroup></div>
+          <div class="field"><label for="buyer-tax">Buyer-paid tax <span>Optional processing base</span></label><InputGroup className="input-wrap"><InputGroupAddon><InputGroupText>$</InputGroupText></InputGroupAddon><InputGroupInput id="buyer-tax" name="buyerTax" type="number" min="0" max="100000" step="0.01" inputMode="decimal" value="0.00" data-input="buyerTax" /></InputGroup></div>
+        </div>
+
+        <div class="two-up">
+          <div class="field"><label for="item-cost">Your item cost <span>Used for profit</span></label><InputGroup className="input-wrap"><InputGroupAddon><InputGroupText>$</InputGroupText></InputGroupAddon><InputGroupInput id="item-cost" name="itemCost" type="number" min="0" max="1000000" step="0.01" inputMode="decimal" value="20.00" data-input="itemCost" /></InputGroup></div>
+          <div class="field"><label for="seller-shipping">Seller-paid shipping <span>Optional deduction</span></label><InputGroup className="input-wrap"><InputGroupAddon><InputGroupText>$</InputGroupText></InputGroupAddon><InputGroupInput id="seller-shipping" name="sellerShipping" type="number" min="0" max="100000" step="0.01" inputMode="decimal" value="0.00" data-input="sellerShipping" /></InputGroup></div>
+        </div>
+
+        <div class="field">
+          <label for="category">Commission rate <span>Your account terms win</span></label>
+          <NativeSelect className="select-wrap" id="category" name="category" data-input="category">
+            <NativeSelectOption value="standard">Other categories - 8%</NativeSelectOption>
+            <NativeSelectOption value="collectibles">Selected collectibles - 8% up to $1,500</NativeSelectOption>
+            <NativeSelectOption value="coins">Coins & money - 4% up to $1,500</NativeSelectOption>
+            <NativeSelectOption value="pallets">Pallets / wholesale - 4%</NativeSelectOption>
+            <NativeSelectOption value="custom">Custom seller rate</NativeSelectOption>
+          </NativeSelect>
+        </div>
+
+        <div class="field" data-custom-rate hidden>
+          <label for="custom-rate">Custom commission <span>0–99%</span></label>
+          <InputGroup className="input-wrap input-wrap--suffix"><InputGroupInput id="custom-rate" name="customRate" type="number" min="0" max="99" step="0.1" inputMode="decimal" value="8" data-input="customRate" /><InputGroupAddon align="inline-end"><InputGroupText>%</InputGroupText></InputGroupAddon></InputGroup>
+        </div>
+
+        <p class="assumption">Buyer shipping and tax affect processing but are not seller revenue. Enter seller-paid shipping separately. Fee taxes, promotions, refunds, packaging, and other overhead remain excluded.</p>
+        <a class="fee-help" href="/methodology/"><MessageCircleQuestion size={16} />See fee assumptions</a>
+        <p class="policy-alert" data-high-value hidden></p>
+      </form>
+
+      <aside class="results" aria-label="Calculated result" aria-live="polite" aria-atomic="true">
+        <div class="print-brand">
+          <img src="/brand/live-payout-icon-48.png" width="32" height="32" alt="" />
+          <div><strong>Live Payout</strong><span>livepayoutcalculator.com</span></div>
+        </div>
+        <div class="print-document-heading"><p>Seller estimate</p><h1>Whatnot payout breakdown</h1><time data-output="printDate"></time></div>
+        <dl class="print-inputs" aria-label="Inputs used for this estimate">
+          <div><dt>Item sale price</dt><dd data-output="printSalePrice">$50.00</dd></div>
+          <div><dt>Buyer shipping</dt><dd data-output="printBuyerShipping">$5.00</dd></div>
+          <div><dt>Buyer-paid tax</dt><dd data-output="printBuyerTax">$0.00</dd></div>
+          <div><dt>Category</dt><dd data-output="printCategory">Other categories</dd></div>
+          <div><dt>Item cost</dt><dd data-output="printItemCost">$20.00</dd></div>
+          <div><dt>Seller-paid shipping</dt><dd data-output="printSellerShipping">$0.00</dd></div>
+        </dl>
+        <p class="eyebrow" data-output="headline">Estimated seller payout</p>
+        <output class="payout" data-output="primary">$44.10</output>
+        <p class="results-intro" data-output="intro">From a $50.00 item sale with $5.00 buyer shipping.</p>
+        <dl>
+          <div><dt>Buyer total</dt><dd data-output="buyerTotal">$55.00</dd></div>
+          <div><dt data-output="commissionLabel">Commission (8%)</dt><dd data-output="commission">-$4.00</dd></div>
+          <div><dt>Processing (2.9% + $0.30)</dt><dd data-output="processing">-$1.90</dd></div>
+          <div data-output="sellerShippingRow" hidden><dt>Seller-paid shipping</dt><dd data-output="sellerShipping">-$0.00</dd></div>
+          <div><dt>Estimated payout</dt><dd data-output="payout">$44.10</dd></div>
+          <div class="total"><dt data-output="profitLabel">After your $20.00 item cost</dt><dd data-output="profit">$24.10 profit</dd></div>
+        </dl>
+        <div class="result-actions" data-result-actions>
+          <Button type="button" variant="outline" data-share><MessageSquareShare size={15} data-icon="inline-start" />Share result</Button>
+          <Button type="button" variant="outline" data-print><PrinterIcon data-icon="inline-start" />Print / save PDF</Button>
+        </div>
+        <p class="share-status" data-share-status aria-live="polite"></p>
+        <p class="source">Estimate only. Fee basis: <a href={policyUrl} target="_blank" rel="noreferrer">Whatnot seller fees ↗</a></p>
+        <a class="print-watermark" href="https://livepayoutcalculator.com/"><img src="/brand/live-payout-icon-48.png" width="18" height="18" alt="" /><span>Estimate created with Live Payout | livepayoutcalculator.com</span></a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { calculatePayout, salePriceForTargetProfit } from "../../features/whatnot/calculate";
+
+  const root = document.querySelector<HTMLElement>("[data-calculator]");
+
+  if (root) {
+    const rates = JSON.parse(root.dataset.rates ?? "{}") as {
+      standard: number;
+      coins: number;
+      pallets: number;
+      processing: number;
+      processingFixedCents: number;
+      highValueThresholdCents: number;
+    };
+    const form = root.querySelector<HTMLFormElement>("form")!;
+    const modeButtons = [...root.querySelectorAll<HTMLButtonElement>("[data-mode]")];
+    const category = root.querySelector<HTMLSelectElement>("[data-input='category']")!;
+    const customRateField = root.querySelector<HTMLElement>("[data-custom-rate]")!;
+    const highValueAlert = root.querySelector<HTMLElement>("[data-high-value]")!;
+    const shareButton = root.querySelector<HTMLButtonElement>("[data-share]")!;
+    const printButton = root.querySelector<HTMLButtonElement>("[data-print]")!;
+    const shareStatus = root.querySelector<HTMLElement>("[data-share-status]")!;
+    let mode: "payout" | "price" = "payout";
+
+    const input = (name: string) => root.querySelector<HTMLInputElement>(`[data-input='${name}']`)!;
+    const output = (name: string) => root.querySelector<HTMLElement>(`[data-output='${name}']`)!;
+    const toCents = (value: string) => Math.max(0, Math.round((Number.parseFloat(value) || 0) * 100));
+    const money = (cents: number) => {
+      const sign = cents < 0 ? "-" : "";
+      return `${sign}$${(Math.abs(cents) / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    };
+    const commissionRate = () => {
+      if (category.value === "coins") return rates.coins;
+      if (category.value === "pallets") return rates.pallets;
+      if (category.value === "custom") return Math.min(99, Math.max(0, Number.parseFloat(input("customRate").value) || 0)) / 100;
+      return rates.standard;
+    };
+    const createShareUrl = () => {
+      const url = new URL(window.location.href);
+      url.search = "";
+      const state = [
+        ["m", mode],
+        ["s", input("salePrice").value],
+        ["t", input("targetProfit").value],
+        ["sh", input("buyerShipping").value],
+        ["tx", input("buyerTax").value],
+        ["c", input("itemCost").value],
+        ["ss", input("sellerShipping").value],
+        ["r", category.value],
+        ["cr", input("customRate").value],
+      ];
+      state.forEach(([key, value]) => url.searchParams.set(key, value));
+      return url;
+    };
+    const syncUrl = () => window.history.replaceState({}, "", createShareUrl());
+    const setMode = (nextMode: "payout" | "price") => {
+      mode = nextMode;
+      modeButtons.forEach((item) => {
+        const selected = item.dataset.mode === mode;
+        item.classList.toggle("is-selected", selected);
+        item.setAttribute("aria-pressed", String(selected));
+      });
+      root.querySelectorAll<HTMLElement>("[data-only]").forEach((field) => {
+        field.hidden = field.dataset.only !== mode;
+      });
+    };
+    const hydrateFromUrl = () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("print") === "calculator") document.body.dataset.print = "calculator";
+      const value = (param: string, field: string) => {
+        const supplied = params.get(param);
+        if (supplied !== null && /^[0-9]*\.?[0-9]+$/.test(supplied)) input(field).value = supplied;
+      };
+      value("s", "salePrice");
+      value("t", "targetProfit");
+      value("sh", "buyerShipping");
+      value("tx", "buyerTax");
+      value("c", "itemCost");
+      value("ss", "sellerShipping");
+      value("cr", "customRate");
+      const categoryValue = params.get("r");
+      if (categoryValue === "standard" || categoryValue === "collectibles" || categoryValue === "coins" || categoryValue === "pallets" || categoryValue === "custom") category.value = categoryValue;
+      setMode(params.get("m") === "price" ? "price" : "payout");
+    };
+
+    const update = () => {
+      const buyerShippingCents = toCents(input("buyerShipping").value);
+      const buyerTaxCents = toCents(input("buyerTax").value);
+      const itemCostCents = toCents(input("itemCost").value);
+      const sellerShippingCents = toCents(input("sellerShipping").value);
+      const rate = commissionRate();
+      const commissionThresholdCents = category.value === "collectibles" || category.value === "coins"
+        ? rates.highValueThresholdCents
+        : undefined;
+      const common = {
+        buyerShippingCents,
+        buyerTaxCents,
+        sellerShippingCents,
+        itemCostCents,
+        commissionRate: rate,
+        commissionThresholdCents,
+        processingRate: rates.processing,
+        processingFixedCents: rates.processingFixedCents,
+      };
+
+      let salePriceCents = toCents(input("salePrice").value);
+      let calculation = calculatePayout({ ...common, salePriceCents });
+
+      if (mode === "price") {
+        const result = salePriceForTargetProfit(toCents(input("targetProfit").value), common);
+        salePriceCents = result.salePriceCents;
+        calculation = result.calculation;
+      }
+
+      output("headline").textContent = mode === "payout" ? "Estimated seller payout" : "Minimum sale price";
+      output("primary").textContent = money(mode === "payout" ? calculation.payoutCents : salePriceCents);
+      output("intro").textContent = mode === "payout"
+        ? `From a ${money(salePriceCents)} item sale with ${money(buyerShippingCents)} buyer shipping.`
+        : `To keep at least ${money(toCents(input("targetProfit").value))} profit after the costs shown.`;
+      output("buyerTotal").textContent = money(calculation.buyerTotalCents);
+      output("commissionLabel").textContent = commissionThresholdCents
+        ? `Commission (${(rate * 100).toLocaleString("en-US", { maximumFractionDigits: 2 })}% up to $1,500)`
+        : `Commission (${(rate * 100).toLocaleString("en-US", { maximumFractionDigits: 2 })}%)`;
+      output("commission").textContent = calculation.commissionCents > 0 ? `-${money(calculation.commissionCents)}` : "$0.00";
+      output("processing").textContent = calculation.processingCents > 0 ? `-${money(calculation.processingCents)}` : "$0.00";
+      output("sellerShipping").textContent = sellerShippingCents > 0 ? `-${money(sellerShippingCents)}` : "$0.00";
+      output("sellerShippingRow").hidden = sellerShippingCents === 0;
+      output("payout").textContent = money(calculation.payoutCents);
+      output("profitLabel").textContent = itemCostCents > 0 ? `After your ${money(itemCostCents)} item cost` : "Estimated profit";
+      output("profit").textContent = `${money(calculation.profitCents)} profit`;
+      output("profit").classList.toggle("is-negative", calculation.profitCents < 0);
+      output("printDate").textContent = `Created ${new Intl.DateTimeFormat("en-US", { dateStyle: "long" }).format(new Date())}`;
+      output("printSalePrice").textContent = money(salePriceCents);
+      output("printBuyerShipping").textContent = money(buyerShippingCents);
+      output("printBuyerTax").textContent = money(buyerTaxCents);
+      output("printCategory").textContent = category.options[category.selectedIndex]?.text.replace(/ -.*/, "") ?? "Custom";
+      output("printItemCost").textContent = money(itemCostCents);
+      output("printSellerShipping").textContent = money(sellerShippingCents);
+      customRateField.hidden = category.value !== "custom";
+      highValueAlert.hidden = salePriceCents < rates.highValueThresholdCents;
+      highValueAlert.textContent = commissionThresholdCents
+        ? "The current limited-time 0% commission treatment on the portion above $1,500 is included for this eligible category. Confirm the official policy before listing."
+        : category.value === "pallets"
+          ? "The current 4% Pallets / Wholesale rate is applied across the item price. This is a limited-time rate; confirm the official policy before listing."
+          : "Only selected categories currently receive 0% commission on the portion above $1,500. Choose an eligible category only when it matches your listing. Your account terms always win.";
+    };
+
+    modeButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setMode(button.dataset.mode === "price" ? "price" : "payout");
+        update();
+        syncUrl();
+      });
+    });
+
+    form.addEventListener("input", () => { update(); syncUrl(); });
+    form.addEventListener("change", () => { update(); syncUrl(); });
+    form.addEventListener("submit", (event) => event.preventDefault());
+    shareButton.addEventListener("click", async () => {
+      const shareUrl = createShareUrl();
+      syncUrl();
+      const text = `${output("headline").textContent}: ${output("primary").textContent}`;
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: "Live Payout result", text, url: shareUrl.href });
+          shareStatus.textContent = "Result shared.";
+        } else if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(shareUrl.href);
+          shareStatus.textContent = "Share link copied.";
+        } else {
+          window.prompt("Copy this share link:", shareUrl.href);
+        }
+      } catch (error) {
+        if ((error as DOMException).name !== "AbortError") shareStatus.textContent = "Could not share automatically. Copy the address bar link instead.";
+      }
+    });
+    printButton.addEventListener("click", () => {
+      document.body.dataset.print = "calculator";
+      window.addEventListener("afterprint", () => { delete document.body.dataset.print; }, { once: true });
+      window.print();
+    });
+    hydrateFromUrl();
+    update();
+  }
+</script>
+
+<style>
+  .calculator-section { padding: 0 0 88px; background: var(--accent); }
+  .tool-label { min-height: 48px; display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: .73rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+  .calculator-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(340px, .85fr); border: 1px solid var(--ink); }
+  .calculator-form { min-width: 0; padding: clamp(26px, 4vw, 48px); background: var(--paper); }
+  .form-heading h2 { max-width: 470px; margin: 0 0 28px; font-size: clamp(1.9rem, 3.5vw, 3rem); line-height: .98; letter-spacing: -.055em; }
+  .mode-switch { display: inline-flex; margin-bottom: 28px; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 3px; background: var(--surface); }
+  .mode-switch button { min-height: 42px; border: 0; padding: 0 13px; background: transparent; color: var(--muted); font-size: .78rem; font-weight: 800; }
+  .mode-switch .is-selected { background: var(--ink); color: var(--paper); }
+  .field { display: grid; gap: 7px; margin-bottom: 19px; }
+  .field[hidden], .policy-alert[hidden] { display: none; }
+  label { display: flex; justify-content: space-between; gap: 12px; font-size: .8rem; font-weight: 800; }
+  label span { color: var(--muted); font-size: .71rem; font-weight: 700; text-align: right; }
+  .input-wrap[data-slot="input-group"] { display: flex; align-items: center; width: 100%; height: 48px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--paper); transition: border-color 140ms ease, box-shadow 140ms ease; }
+  .input-wrap[data-slot="input-group"]:focus-within { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+  .input-wrap [data-slot="input-group-addon"] { display: flex; flex: 0 0 auto; align-items: center; height: 100%; padding: 0 0 0 13px; color: var(--ink); font-size: .9rem; }
+  .input-wrap--suffix [data-slot="input-group-addon"] { padding: 0 13px 0 0; }
+  .input-wrap [data-slot="input-group-control"] { display: block; flex: 1 1 auto; width: 100%; min-width: 0; height: 100%; border: 0 !important; border-radius: 0; padding: 0 12px; background: transparent; box-shadow: none !important; color: var(--ink); font-size: 1rem; font-weight: 750; }
+  :global(.select-wrap) { position: relative; display: block; width: 100%; }
+  :global(.select-wrap [data-slot="native-select"]) { display: block; appearance: none; width: 100%; height: 48px; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 0 42px 0 12px; background: var(--paper); color: var(--ink); font-size: .84rem; font-weight: 750; transition: border-color 140ms ease, box-shadow 140ms ease; }
+  :global(.select-wrap [data-slot="native-select"]:focus-visible) { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+  :global(.select-wrap [data-slot="native-select-icon"]) { position: absolute; top: 50%; right: 13px; width: 16px; height: 16px; transform: translateY(-50%); pointer-events: none; }
+  .two-up { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .assumption, .policy-alert { margin: 2px 0 0; color: var(--muted); font-size: .76rem; line-height: 1.5; }
+  .fee-help { display: inline-flex; align-items: center; gap: 6px; width: fit-content; margin-top: 10px; color: var(--ink); font-size: .74rem; font-weight: 800; text-decoration: none; } .fee-help:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .policy-alert { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 13px; color: var(--ink); font-weight: 750; }
+  .results { min-width: 0; padding: clamp(26px, 4vw, 48px); background: var(--ink); color: var(--paper); }
+  .results [hidden] { display: none !important; }
+  .results .eyebrow { color: #d7d5d2; }
+  .payout { display: block; margin: 0; color: var(--paper); font-size: clamp(3.4rem, 6vw, 5.4rem); line-height: .9; font-weight: 850; letter-spacing: -.08em; }
+  .results-intro { max-width: 350px; min-height: 2.5em; color: #d7d5d2; font-size: .88rem; line-height: 1.45; }
+  dl { margin: 31px 0 0; border-top: 1px solid #484544; }
+  dl div { display: flex; justify-content: space-between; gap: 18px; padding: 13px 0; border-bottom: 1px solid #484544; font-size: .82rem; }
+  dt { color: #d7d5d2; }
+  dd { margin: 0; font-weight: 800; text-align: right; white-space: nowrap; }
+  .total dd { color: var(--accent); }
+  .total dt { color: var(--paper); }
+  .total .is-negative { color: #ffafa6; }
+  .result-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; }
+  .result-actions button { min-height: 44px; border: 1px solid #817c78; padding: 0 12px; background: transparent; color: var(--paper); font-size: .76rem; font-weight: 800; }
+  .result-actions [data-slot="button"] { min-height: 44px; } .result-actions [data-slot="button"] [data-icon] { flex: 0 0 15px; }
+  .result-actions button:hover, .result-actions button:focus-visible { border-color: var(--paper); outline: 0; }
+  .share-status { min-height: 1.4em; margin: 8px 0 -8px; color: #d7d5d2; font-size: .72rem; }
+  .source { margin: 22px 0 0; color: #d7d5d2; font-size: .73rem; line-height: 1.4; }
+  .source a { color: var(--paper); text-underline-offset: 3px; }
+  .print-brand, .print-watermark, .print-document-heading, .print-inputs { display: none; }
+  @media (max-width: 780px) { .calculator-grid { grid-template-columns: 1fr; } .calculator-section { padding-bottom: 58px; } }
+  @media (max-width: 430px) { .tool-label { align-items: flex-start; flex-direction: column; padding: 12px 0; gap: 4px; } .two-up { grid-template-columns: 1fr; gap: 0; } .mode-switch { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); width: 100%; } .mode-switch button { min-width: 0; padding: 0 8px; } }
+  @media (max-width: 360px) { .calculator-form, .results { padding: 22px; } .mode-switch button { white-space: normal; line-height: 1.1; } .mode-switch button:first-child { padding-inline: 6px; } }
+  @media print {
+    .tool-label, .calculator-form, .result-actions, .share-status { display: none !important; }
+    .calculator-section { padding: 0; background: var(--paper); }
+    .shell { width: 100%; }
+    .calculator-grid { display: block; border: 0; }
+    .results { page: calculator; display: flex; flex-direction: column; width: 100%; min-height: 252mm; max-width: none; border: 1px solid #d9d8d3; padding: 10mm; background: var(--paper); color: var(--ink); }
+    .print-brand { display: flex; align-items: center; gap: 11px; margin: 0 0 9mm; padding-bottom: 5mm; border-bottom: 1px solid var(--line); }
+    .print-brand img { width: 34px; height: 34px; object-fit: contain; }
+    .print-brand strong, .print-brand span { display: block; }
+    .print-brand strong { font-size: 1rem; letter-spacing: -.02em; }
+    .print-brand span { margin-top: 3px; color: var(--muted); font-size: .7rem; }
+    .print-document-heading { display: block; margin-bottom: 7mm; }
+    .print-document-heading p { margin: 0 0 2mm; color: var(--muted); font-size: .68rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .print-document-heading h1 { margin: 0; font-size: 2rem; line-height: 1; letter-spacing: -.05em; }
+    .print-document-heading time { display: block; margin-top: 3mm; color: var(--muted); font-size: .72rem; }
+    .print-inputs { display: grid; grid-template-columns: 1fr 1fr; margin: 0 0 8mm; border: 1px solid var(--line); }
+    .print-inputs div { display: flex; padding: 3mm 4mm; border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); font-size: .75rem; }
+    .print-inputs div:nth-child(even) { border-right: 0; }
+    .print-inputs div:nth-last-child(-n + 2) { border-bottom: 0; }
+    .results .eyebrow, .results-intro, dt { color: var(--muted); }
+    .results > .eyebrow { margin-bottom: 3mm; }
+    .payout { color: var(--ink); font-size: 4.4rem; }
+    .results-intro { min-height: 0; margin: 3mm 0 5mm; }
+    dl { border-color: var(--line); }
+    dl div { border-color: var(--line); }
+    .total dt { color: var(--ink); }
+    .total dd { color: var(--success); }
+    .source { display: block !important; margin: 6mm 0 0; padding-top: 4mm; border-top: 1px solid var(--line); color: var(--muted); font-size: .68rem; }
+    .source a { color: var(--ink); }
+    .print-watermark { display: inline-flex; align-items: center; align-self: flex-start; gap: 7px; margin-top: auto; padding-top: 7mm; color: var(--muted); font-size: .72rem; text-decoration: none; }
+    .print-watermark img { width: 18px; height: 18px; object-fit: contain; opacity: .72; }
+  }
+</style>

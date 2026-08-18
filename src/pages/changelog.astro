@@ -1,0 +1,49 @@
+---
+import Breadcrumbs from "@/components/chrome/Breadcrumbs.astro";
+import SiteFooter from "@/components/chrome/SiteFooter.astro";
+import SiteHeader from "@/components/chrome/SiteHeader.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { usWhatnotFeeSchedule } from "@/features/whatnot/fee-schedule";
+
+const title = "Fee Policy Changelog | Live Payout";
+const description = "A dated record of fee-assumption updates used by the Live Payout calculator.";
+const checkedDate = new Intl.DateTimeFormat("en-US", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(`${usWhatnotFeeSchedule.verifiedAt}T00:00:00Z`));
+const breadcrumbs = [{ name: "Home", path: "/" }, { name: "Fee changelog" }];
+---
+
+<BaseLayout {title} {description} canonicalPath="/changelog/" pageType="CollectionPage" {breadcrumbs}>
+  <SiteHeader />
+  <main class="page shell">
+    <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Fee changelog" }]} />
+    <p class="eyebrow">Fee policy record</p>
+    <h1>Changes should leave a trail.</h1>
+    <p class="lede">This is the public record of the fee assumptions used by Live Payout. When a policy changes, the calculator, methodology, and checked date are updated together.</p>
+
+    <ol class="entries">
+      <li>
+        <div class="entry-meta"><time datetime={usWhatnotFeeSchedule.verifiedAt}>{checkedDate}</time><span>Current</span></div>
+        <h2>Initial US fee model published</h2>
+        <p>Added the 8% other-category commission, 4% Coins & Money and Pallets / Wholesale rates, 2.9% plus $0.30 processing, optional buyer-paid tax and seller-paid shipping, and the limited-time $1,500 commission threshold for eligible US categories.</p>
+        <a href="/methodology/">Read the methodology</a>
+      </li>
+    </ol>
+
+    <p class="note">Seller-specific terms, special-category treatment, promotions, taxes, refunds, and label costs can produce a different final settlement. Confirm the current platform policy before pricing a high-stakes show.</p>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .page { max-width: 800px; padding-top: 76px; padding-bottom: 110px; }
+  h1 { max-width: 720px; margin: 0; font-size: clamp(3rem, 7vw, 5.8rem); line-height: .9; letter-spacing: -.08em; }
+  .lede { max-width: 620px; margin: 28px 0 58px; color: var(--muted); font-size: 1.15rem; line-height: 1.48; }
+  .entries { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .entries li { padding: 32px 0 35px; border-bottom: 1px solid var(--line); }
+  .entry-meta { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: .76rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+  .entry-meta span { padding: 4px 7px; background: var(--accent); color: var(--ink); font-size: .66rem; }
+  h2 { margin: 14px 0 12px; font-size: 1.5rem; letter-spacing: -.04em; }
+  .entries p, .note { max-width: 650px; color: var(--muted); line-height: 1.6; }
+  a { color: var(--ink); font-weight: 800; text-underline-offset: 3px; }
+  .note { margin: 30px 0 0; font-size: .82rem; }
+  @media (max-width: 640px) { .page { padding-top: 48px; padding-bottom: 70px; } }
+</style>

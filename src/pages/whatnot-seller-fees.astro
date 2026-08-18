@@ -1,0 +1,27 @@
+---
+import Breadcrumbs from "@/components/chrome/Breadcrumbs.astro";
+import SiteFooter from "@/components/chrome/SiteFooter.astro";
+import SiteHeader from "@/components/chrome/SiteHeader.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+const title = "Whatnot Seller Fees Explained (US) | Live Payout";
+const description = "A plain-English explanation of standard Whatnot seller commission, payment processing, coins fees, and high-value order rules in the US.";
+const sourceUrl = "https://help.whatnot.com/hc/en-us/articles/4847069165965-Whatnot-seller-fees";
+const breadcrumbs = [{ name: "Home", path: "/" }, { name: "Whatnot seller fees" }];
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://livepayoutcalculator.com/whatnot-seller-fees/#article",
+  headline: "Whatnot seller fees, explained without the fog",
+  description,
+  image: "https://livepayoutcalculator.com/og.png",
+  datePublished: "2026-08-18",
+  dateModified: "2026-08-18",
+  mainEntityOfPage: { "@id": "https://livepayoutcalculator.com/whatnot-seller-fees/#webpage" },
+  author: { "@type": "Organization", "@id": "https://livepayoutcalculator.com/#organization", name: "Live Payout", url: "https://livepayoutcalculator.com/" },
+  publisher: { "@type": "Organization", "@id": "https://livepayoutcalculator.com/#organization", name: "Live Payout", url: "https://livepayoutcalculator.com/", logo: { "@type": "ImageObject", url: "https://livepayoutcalculator.com/brand/live-payout-icon.png", width: 1254, height: 1254 } },
+};
+---
+<BaseLayout {title} {description} canonicalPath="/whatnot-seller-fees/" {schema} {breadcrumbs}><SiteHeader /><main class="guide shell"><Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Whatnot seller fees" }]} /><p class="eyebrow">US seller guide · checked 18 Aug 2026</p><h1>Whatnot seller fees, explained without the fog.</h1><p class="lede">Your seller fee is usually not one flat percentage. It is a commission plus payment processing, calculated from different parts of the buyer’s order.</p><hr /><section><h2>The standard US fee structure</h2><p>For other categories, Whatnot’s published US seller fee is an 8% commission on the item sale price. Payment processing is generally 2.9% of the buyer’s total order value, plus $0.30 per order. Total order value normally includes sale price, buyer-paid shipping, and buyer-paid tax.</p><div class="formula"><span>Estimated payout</span><b>= item price − commission − processing</b></div></section><section><h2>Categories and exceptions</h2><p>Coins & Money uses a 4% published commission. Selected collectibles use 8% up to $1,500, while Coins & Money uses 4% up to that threshold; the portion above $1,500 currently receives 0% commission. Whatnot describes this treatment as limited-time. Sellers with a bespoke rate or active incentive should use their account-specific terms.</p></section><section><h2>Why buyer shipping and tax still matter</h2><p>Buyer-paid shipping and tax are not counted as seller revenue in Live Payout, but they can be part of the payment-processing base. That is why the calculator asks for them separately instead of assuming them away.</p></section><section><h2>Use the current policy as the final word</h2><p>Fee policies can change, and this guide is a simplifying aid—not financial or platform-policy advice. Review <a href={sourceUrl} target="_blank" rel="noreferrer">Whatnot’s current seller-fee policy ↗</a> before setting your price.</p></section></main><SiteFooter /></BaseLayout>
+<style>
+  .guide { max-width: 800px; padding-top: 76px; padding-bottom: 110px; } h1 { max-width: 760px; margin: 0; font-size: clamp(3rem, 7vw, 5.8rem); line-height: .9; letter-spacing: -.08em; } .lede { max-width: 620px; margin: 28px 0 58px; color: var(--muted); font-size: 1.15rem; line-height: 1.48; } hr { border: 0; border-top: 1px solid var(--line); } section { padding: 34px 0; border-bottom: 1px solid var(--line); } h2 { margin: 0 0 13px; font-size: 1.45rem; letter-spacing: -.04em; } section p { max-width: 650px; margin: 0; color: var(--muted); line-height: 1.6; } section a { color: var(--ink); font-weight: 750; text-underline-offset: 3px; } .formula { display: grid; gap: 7px; margin-top: 20px; padding: 17px; border: 1px solid var(--line); background: var(--surface); font-size: .86rem; } .formula span { color: var(--muted); } @media (max-width: 640px) { .guide { padding-top: 48px; padding-bottom: 70px; } }
+</style>

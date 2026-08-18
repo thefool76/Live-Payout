@@ -1,0 +1,7 @@
+---
+import Breadcrumbs from "@/components/chrome/Breadcrumbs.astro"; import SiteFooter from "@/components/chrome/SiteFooter.astro"; import SiteHeader from "@/components/chrome/SiteHeader.astro"; import BaseLayout from "@/layouts/BaseLayout.astro";
+const title = "Terms | Live Payout"; const description = "Terms for using Live Payout.";
+const breadcrumbs = [{ name: "Home", path: "/" }, { name: "Terms" }];
+---
+<BaseLayout {title} {description} canonicalPath="/terms/" {breadcrumbs}><SiteHeader /><main class="legal shell"><Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Terms" }]} /><p class="eyebrow">Terms</p><h1>Use it to estimate, not to assume.</h1><p>Live Payout provides educational estimates. It is not financial, tax, legal, or platform-policy advice. Actual fees and payouts are determined by Whatnot and may differ because of account terms, category rules, promotions, refunds, taxes, or policy changes.</p><p>Live Payout is an independent project and is not affiliated with or endorsed by Whatnot.</p></main><SiteFooter /></BaseLayout>
+<style>.legal{max-width:800px;padding-top:76px;padding-bottom:110px}.legal h1{margin:0 0 28px;font-size:clamp(3rem,7vw,5.8rem);line-height:.9;letter-spacing:-.08em}.legal p{max-width:650px;color:var(--muted);line-height:1.6}</style>

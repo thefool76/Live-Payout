@@ -1,0 +1,6 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+const title = "Page not found | Live Payout"; const description = "The requested page could not be found.";
+---
+<BaseLayout {title} {description} canonicalPath="/404/" robots="noindex, follow"><main class="shell"><p class="eyebrow">404</p><h1>That page is not on the payout sheet.</h1><a class="button button--dark" href="/">Back to calculator</a></main></BaseLayout>
+<style>main{min-height:100vh;padding-top:20vh}h1{max-width:700px;margin:0 0 30px;font-size:clamp(3rem,7vw,6rem);line-height:.9;letter-spacing:-.08em}</style>

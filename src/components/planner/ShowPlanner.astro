@@ -1,0 +1,285 @@
+---
+import { usWhatnotFeeSchedule } from "../../features/whatnot/fee-schedule";
+import { Button } from "@/components/ui/button";
+import { Download } from "@/components/animate-ui/icons/download";
+import { Plus } from "@/components/animate-ui/icons/plus";
+import { Trash2 } from "@/components/animate-ui/icons/trash-2";
+import { PrinterIcon } from "lucide-react";
+
+const rates = {
+  standard: usWhatnotFeeSchedule.standardCommissionRate,
+  coins: usWhatnotFeeSchedule.coinsCommissionRate,
+  pallets: usWhatnotFeeSchedule.wholesalePalletsCommissionRate,
+  processing: usWhatnotFeeSchedule.processingRate,
+  processingFixedCents: usWhatnotFeeSchedule.processingFixedCents,
+  highValueThresholdCents: usWhatnotFeeSchedule.highValueCommissionThresholdCents,
+};
+---
+
+<section class="planner-section" id="show-planner" aria-labelledby="planner-title" data-show-planner data-rates={JSON.stringify(rates)}>
+  <div class="shell">
+    <div class="print-brand">
+      <img src="/brand/live-payout-icon-48.png" width="32" height="32" alt="" />
+      <div><strong>Live Payout</strong><span>Show plan | livepayoutcalculator.com</span></div>
+    </div>
+    <div class="print-brand">
+      <img src="/brand/live-payout-icon-48.png" width="32" height="32" alt="" />
+      <div><strong>Live Payout show plan</strong><span>livepayoutcalculator.com</span></div>
+    </div>
+    <div class="planner-intro">
+      <div><p class="eyebrow">Show planner</p><h2 class="section-heading" id="planner-title">Price the whole show before you go live.</h2></div>
+      <p>Build a quick item-by-item plan, see expected fees and profit, then export it. Your plan stays on this device unless you export it.</p>
+    </div>
+
+    <div class="planner-grid">
+      <div class="planner-workspace">
+        <div class="planner-toolbar">
+          <p><b data-output="itemCount">2</b> items in this plan</p>
+          <div>
+            <Button type="button" data-add-item><Plus size={14} data-icon="inline-start" />Add item</Button>
+            <Button type="button" variant="outline" data-export><Download size={14} data-icon="inline-start" />Export CSV</Button>
+            <Button type="button" variant="outline" data-print-plan><PrinterIcon data-icon="inline-start" />Print / PDF</Button>
+            <Button type="button" variant="outline" data-clear><Trash2 size={14} data-icon="inline-start" />Clear plan</Button>
+          </div>
+        </div>
+        <div class="planner-head" aria-hidden="true"><span>Item</span><span>Cost</span><span>Expected sale</span><span>Buyer shipping</span><span>Buyer tax</span><span>Seller shipping</span><span>Commission</span><span>Payout</span><span>Profit</span><span></span></div>
+        <div class="planner-list" data-planner-list></div>
+        <p class="planner-status" data-planner-status aria-live="polite"></p>
+      </div>
+
+      <aside class="planner-summary" aria-live="polite" aria-label="Show plan summary">
+        <p class="eyebrow">Expected show total</p>
+        <output class="planner-profit" data-output="totalProfit">$0.00</output>
+        <p class="summary-copy">Estimated profit after your item costs and the fee assumptions shown.</p>
+        <dl>
+          <div><dt>Expected sales</dt><dd data-output="sales">$0.00</dd></div>
+          <div><dt>Estimated fees</dt><dd data-output="fees">-$0.00</dd></div>
+          <div><dt>Estimated payout</dt><dd data-output="payout">$0.00</dd></div>
+          <div><dt>Items at a profit</dt><dd data-output="profitable">0 of 0</dd></div>
+        </dl>
+        <p class="planner-note">Estimate only. Fee taxes, seller-specific terms, promotions, refunds, packaging, and other overhead can change the final result.</p>
+        <a class="print-watermark" href="https://livepayoutcalculator.com/"><img src="/brand/live-payout-icon-48.png" width="18" height="18" alt="" /><span>Plan created with Live Payout | livepayoutcalculator.com</span></a>
+      </aside>
+    </div>
+  </div>
+
+  <template data-planner-row>
+    <article class="planner-row" data-row>
+      <label>Item<input type="text" maxlength="70" data-field="name" aria-label="Item name" /></label>
+      <label>Cost<span class="money-input"><b>$</b><input type="number" min="0" max="1000000" step="0.01" inputmode="decimal" data-field="cost" aria-label="Item cost" /></span></label>
+      <label>Expected sale<span class="money-input"><b>$</b><input type="number" min="0" max="1000000" step="0.01" inputmode="decimal" data-field="sale" aria-label="Expected sale price" /></span></label>
+      <label>Buyer shipping<span class="money-input"><b>$</b><input type="number" min="0" max="100000" step="0.01" inputmode="decimal" data-field="shipping" aria-label="Buyer shipping" /></span></label>
+      <label>Buyer tax<span class="money-input"><b>$</b><input type="number" min="0" max="100000" step="0.01" inputmode="decimal" data-field="tax" aria-label="Buyer-paid tax" /></span></label>
+      <label>Seller shipping<span class="money-input"><b>$</b><input type="number" min="0" max="100000" step="0.01" inputmode="decimal" data-field="sellerShipping" aria-label="Seller-paid shipping" /></span></label>
+      <label>Commission<select data-field="rate" aria-label="Commission type"><option value="standard">Other - 8%</option><option value="collectibles">Collectibles - 8% to $1,500</option><option value="coins">Coins - 4% to $1,500</option><option value="pallets">Pallets - 4%</option><option value="custom">Custom</option></select></label>
+      <label class="custom-rate" data-custom-rate hidden>Custom %<input type="number" min="0" max="99" step="0.1" inputmode="decimal" data-field="customRate" aria-label="Custom commission percentage" /></label>
+      <p class="item-result"><span>Payout</span><b data-output="payout">$0.00</b></p>
+      <p class="item-result item-result--profit"><span>Profit</span><b data-output="profit">$0.00</b></p>
+      <button type="button" class="remove-item" data-remove aria-label="Remove item">Remove</button>
+      <p class="planner-row-warning" data-high-value hidden>At $1,500+, confirm whether this category has special commission treatment.</p>
+    </article>
+  </template>
+</section>
+
+<script>
+  import { calculatePayout } from "../../features/whatnot/calculate";
+
+  type PlannerRate = "standard" | "collectibles" | "coins" | "pallets" | "custom";
+  type PlannerItem = { id: string; name: string; cost: string; sale: string; shipping: string; tax: string; sellerShipping: string; rate: PlannerRate; customRate: string };
+
+  const root = document.querySelector<HTMLElement>("[data-show-planner]");
+  if (root) {
+    if (new URLSearchParams(window.location.search).get("print") === "planner") document.body.dataset.print = "planner";
+    const storageKey = "live-payout-show-planner-v1";
+    const rates = JSON.parse(root.dataset.rates ?? "{}") as { standard: number; coins: number; pallets: number; processing: number; processingFixedCents: number; highValueThresholdCents: number };
+    const list = root.querySelector<HTMLElement>("[data-planner-list]")!;
+    const template = root.querySelector<HTMLTemplateElement>("template[data-planner-row]")!;
+    const status = root.querySelector<HTMLElement>("[data-planner-status]")!;
+    const output = (name: string) => root.querySelector<HTMLElement>(`[data-output='${name}']`)!;
+    const money = (cents: number) => `${cents < 0 ? "-" : ""}$${(Math.abs(cents) / 100).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const cents = (value: string, maximum = 100000000) => Math.min(maximum, Math.max(0, Math.round((Number.parseFloat(value) || 0) * 100)));
+    const itemId = () => `item-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    const defaultItems = (): PlannerItem[] => [
+      { id: itemId(), name: "Card lot", cost: "20.00", sale: "50.00", shipping: "5.00", tax: "0.00", sellerShipping: "0.00", rate: "collectibles", customRate: "8" },
+      { id: itemId(), name: "Coins lot", cost: "35.00", sale: "70.00", shipping: "5.00", tax: "0.00", sellerShipping: "0.00", rate: "coins", customRate: "4" },
+    ];
+
+    const readItems = (): PlannerItem[] => [...list.querySelectorAll<HTMLElement>("[data-row]")].map((row) => ({
+      id: row.dataset.id ?? itemId(),
+      name: row.querySelector<HTMLInputElement>("[data-field='name']")!.value,
+      cost: row.querySelector<HTMLInputElement>("[data-field='cost']")!.value,
+      sale: row.querySelector<HTMLInputElement>("[data-field='sale']")!.value,
+      shipping: row.querySelector<HTMLInputElement>("[data-field='shipping']")!.value,
+      tax: row.querySelector<HTMLInputElement>("[data-field='tax']")!.value,
+      sellerShipping: row.querySelector<HTMLInputElement>("[data-field='sellerShipping']")!.value,
+      rate: row.querySelector<HTMLSelectElement>("[data-field='rate']")!.value as PlannerRate,
+      customRate: row.querySelector<HTMLInputElement>("[data-field='customRate']")!.value,
+    }));
+
+    const save = () => {
+      try { localStorage.setItem(storageKey, JSON.stringify(readItems())); } catch { /* Storage can be disabled by the browser. */ }
+    };
+    const rateFor = (item: PlannerItem) => {
+      if (item.rate === "coins") return rates.coins;
+      if (item.rate === "pallets") return rates.pallets;
+      if (item.rate === "custom") return Math.min(99, Math.max(0, Number.parseFloat(item.customRate) || 0)) / 100;
+      return rates.standard;
+    };
+    const thresholdFor = (item: PlannerItem) => item.rate === "collectibles" || item.rate === "coins"
+      ? rates.highValueThresholdCents
+      : undefined;
+
+    const update = () => {
+      const items = readItems();
+      let sales = 0;
+      let fees = 0;
+      let payouts = 0;
+      let profits = 0;
+      let profitable = 0;
+
+      [...list.querySelectorAll<HTMLElement>("[data-row]")].forEach((row, index) => {
+        const item = items[index];
+        const salePriceCents = cents(item.sale);
+        const commissionRate = rateFor(item);
+        const calculation = calculatePayout({
+          salePriceCents,
+          buyerShippingCents: cents(item.shipping, 10000000),
+          buyerTaxCents: cents(item.tax, 10000000),
+          sellerShippingCents: cents(item.sellerShipping, 10000000),
+          itemCostCents: cents(item.cost),
+          commissionRate,
+          commissionThresholdCents: thresholdFor(item),
+          processingRate: rates.processing,
+          processingFixedCents: rates.processingFixedCents,
+        });
+        const customRate = row.querySelector<HTMLElement>("[data-custom-rate]")!;
+        const highValue = row.querySelector<HTMLElement>("[data-high-value]")!;
+        const profit = row.querySelector<HTMLElement>("[data-output='profit']")!;
+        customRate.hidden = item.rate !== "custom";
+        highValue.hidden = salePriceCents < rates.highValueThresholdCents;
+        row.querySelector<HTMLElement>("[data-output='payout']")!.textContent = money(calculation.payoutCents);
+        profit.textContent = money(calculation.profitCents);
+        profit.classList.toggle("is-negative", calculation.profitCents < 0);
+        sales += salePriceCents;
+        fees += calculation.commissionCents + calculation.processingCents;
+        payouts += calculation.payoutCents;
+        profits += calculation.profitCents;
+        if (calculation.profitCents >= 0 && salePriceCents > 0) profitable += 1;
+      });
+
+      output("itemCount").textContent = String(items.length);
+      output("totalProfit").textContent = money(profits);
+      output("totalProfit").classList.toggle("is-negative", profits < 0);
+      output("sales").textContent = money(sales);
+      output("fees").textContent = fees > 0 ? `-${money(fees)}` : "$0.00";
+      output("payout").textContent = money(payouts);
+      output("profitable").textContent = `${profitable} of ${items.length}`;
+      save();
+    };
+
+    const renderItem = (item: PlannerItem) => {
+      const fragment = template.content.cloneNode(true) as DocumentFragment;
+      const row = fragment.querySelector<HTMLElement>("[data-row]")!;
+      row.dataset.id = item.id;
+      const set = (name: keyof PlannerItem) => {
+        const element = row.querySelector<HTMLInputElement | HTMLSelectElement>(`[data-field='${name}']`)!;
+        element.value = item[name];
+      };
+      set("name"); set("cost"); set("sale"); set("shipping"); set("tax"); set("sellerShipping"); set("rate"); set("customRate");
+      row.querySelectorAll<HTMLInputElement | HTMLSelectElement>("input, select").forEach((field) => {
+        field.addEventListener("input", update);
+        field.addEventListener("change", update);
+      });
+      row.querySelector<HTMLButtonElement>("[data-remove]")!.addEventListener("click", () => {
+        row.remove();
+        if (!list.children.length) renderItem({ id: itemId(), name: "New item", cost: "0.00", sale: "0.00", shipping: "0.00", tax: "0.00", sellerShipping: "0.00", rate: "standard", customRate: "8" });
+        update();
+      });
+      list.append(fragment);
+    };
+
+    const exportCsv = () => {
+      const lines = [["Item", "Item cost", "Expected sale", "Buyer shipping", "Buyer tax", "Seller-paid shipping", "Commission rate", "Estimated payout", "Estimated profit"]];
+      readItems().forEach((item) => {
+        const calculation = calculatePayout({
+          salePriceCents: cents(item.sale), buyerShippingCents: cents(item.shipping, 10000000), buyerTaxCents: cents(item.tax, 10000000), sellerShippingCents: cents(item.sellerShipping, 10000000), itemCostCents: cents(item.cost),
+          commissionRate: rateFor(item), commissionThresholdCents: thresholdFor(item), processingRate: rates.processing, processingFixedCents: rates.processingFixedCents,
+        });
+        lines.push([item.name || "Untitled item", item.cost, item.sale, item.shipping, item.tax, item.sellerShipping, `${(rateFor(item) * 100).toFixed(2)}%`, (calculation.payoutCents / 100).toFixed(2), (calculation.profitCents / 100).toFixed(2)]);
+      });
+      const csv = lines.map((line) => line.map((value) => `"${String(value).replaceAll('"', '""')}"`).join(",")).join("\n");
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+      link.download = "live-payout-show-plan.csv";
+      link.click();
+      URL.revokeObjectURL(link.href);
+      status.textContent = "CSV exported.";
+    };
+
+    const load = () => {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) ?? "null");
+        if (Array.isArray(saved) && saved.length) return saved.slice(0, 50).map((item) => ({
+          id: typeof item.id === "string" ? item.id : itemId(), name: typeof item.name === "string" ? item.name : "Untitled item",
+          cost: typeof item.cost === "string" ? item.cost : "0.00", sale: typeof item.sale === "string" ? item.sale : "0.00",
+          shipping: typeof item.shipping === "string" ? item.shipping : "0.00", tax: typeof item.tax === "string" ? item.tax : "0.00",
+          sellerShipping: typeof item.sellerShipping === "string" ? item.sellerShipping : "0.00",
+          rate: item.rate === "collectibles" || item.rate === "coins" || item.rate === "pallets" || item.rate === "custom" ? item.rate : "standard",
+          customRate: typeof item.customRate === "string" ? item.customRate : "8",
+        })) as PlannerItem[];
+      } catch { /* Fall back to the two starter examples. */ }
+      return defaultItems();
+    };
+
+    load().forEach(renderItem);
+    root.querySelector<HTMLButtonElement>("[data-add-item]")!.addEventListener("click", () => {
+      renderItem({ id: itemId(), name: `Item ${list.children.length + 1}`, cost: "0.00", sale: "0.00", shipping: "0.00", tax: "0.00", sellerShipping: "0.00", rate: "standard", customRate: "8" });
+      update();
+    });
+    root.querySelector<HTMLButtonElement>("[data-export]")!.addEventListener("click", exportCsv);
+    root.querySelector<HTMLButtonElement>("[data-print-plan]")!.addEventListener("click", () => {
+      document.body.dataset.print = "planner";
+      window.addEventListener("afterprint", () => { delete document.body.dataset.print; }, { once: true });
+      window.print();
+    });
+    root.querySelector<HTMLButtonElement>("[data-clear]")!.addEventListener("click", () => {
+      if (!window.confirm("Clear every item saved in this show plan?")) return;
+      list.replaceChildren();
+      defaultItems().forEach(renderItem);
+      status.textContent = "Plan reset to the starter examples.";
+      update();
+    });
+    update();
+  }
+</script>
+
+<style>
+  .planner-section { padding: 96px 0; border-top: 1px solid var(--line); background: var(--surface); }
+  .planner-intro { display: grid; grid-template-columns: 1fr .75fr; align-items: end; gap: 56px; margin-bottom: 48px; }
+  .planner-intro h2 { margin: 0; }
+  .planner-intro > p { max-width: 420px; margin: 0; color: var(--muted); line-height: 1.55; }
+  .planner-grid { display: grid; grid-template-columns: 1fr; align-items: start; border: 1px solid var(--ink); background: var(--paper); }
+  .planner-workspace { min-width: 0; padding: 25px; }
+  .planner-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-bottom: 22px; }
+  .planner-toolbar p { margin: 0; color: var(--muted); font-size: .78rem; } .planner-toolbar p b { color: var(--ink); }
+  .planner-toolbar div { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }
+  .planner-toolbar button, .remove-item { min-height: 42px; border: 1px solid var(--line); padding: 0 10px; background: var(--paper); color: var(--ink); font-size: .72rem; font-weight: 800; }
+  .planner-toolbar [data-slot="button"] { min-height: 42px; } .planner-toolbar [data-slot="button"] [data-icon] { flex: 0 0 14px; }
+  .planner-toolbar button:first-child { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+  .planner-toolbar button:hover, .planner-toolbar button:focus-visible, .remove-item:hover, .remove-item:focus-visible { border-color: var(--ink); outline: 0; }
+  .planner-head, .planner-row { display: grid; grid-template-columns: minmax(108px, 1.25fr) repeat(5, minmax(76px, .72fr)) minmax(104px, .95fr) repeat(2, minmax(68px, .62fr)) 52px; gap: 8px; }
+  .planner-head { padding: 0 0 8px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .66rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+  .planner-row { position: relative; align-items: end; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .planner-row label { display: grid; gap: 5px; color: var(--muted); font-size: .66rem; font-weight: 800; } .planner-row > label > input, .planner-row > label > select { width: 100%; height: 44px; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 0 8px; background: var(--paper); color: var(--ink); font-size: .78rem; font-weight: 750; outline: 0; transition: border-color 140ms ease, box-shadow 140ms ease; } .planner-row > label > input:focus, .planner-row > label > select:focus { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+  .money-input { display: flex; align-items: center; height: 44px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--paper); transition: border-color 140ms ease, box-shadow 140ms ease; } .money-input:focus-within { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); } .money-input b { padding-left: 8px; color: var(--muted); font-size: .75rem; } .money-input input { height: 100% !important; border: 0 !important; box-shadow: none !important; }
+  .item-result { display: grid; gap: 6px; margin: 0; padding-bottom: 6px; font-size: .72rem; } .item-result span { color: var(--muted); font-size: .66rem; font-weight: 800; } .item-result b { white-space: nowrap; } .item-result--profit b { color: var(--success); } .item-result--profit .is-negative { color: var(--danger); }
+  .remove-item { min-height: 42px; padding: 0 6px; color: var(--muted); }
+  .planner-row-warning { grid-column: 1 / -1; margin: 3px 0 0; color: var(--danger); font-size: .71rem; line-height: 1.4; } .planner-row-warning[hidden], .custom-rate[hidden] { display: none; }
+  .planner-status { min-height: 1.4em; margin: 12px 0 0; color: var(--muted); font-size: .72rem; }
+  .planner-summary { min-height: 100%; padding: 32px; background: var(--ink); color: var(--paper); } .planner-summary .eyebrow { color: #d7d5d2; } .planner-profit { display: block; margin: 0; color: var(--accent); font-size: clamp(3rem, 5vw, 4.4rem); font-weight: 850; line-height: .92; letter-spacing: -.075em; } .planner-profit.is-negative { color: #ffafa6; } .summary-copy { margin: 14px 0 27px; color: #d7d5d2; font-size: .82rem; line-height: 1.5; } .planner-summary dl { margin: 0; border-top: 1px solid #484544; } .planner-summary dl div { display: flex; justify-content: space-between; gap: 14px; padding: 13px 0; border-bottom: 1px solid #484544; font-size: .77rem; } .planner-summary dt { color: #d7d5d2; } .planner-summary dd { margin: 0; text-align: right; font-weight: 800; } .planner-note { margin: 23px 0 0; color: #d7d5d2; font-size: .71rem; line-height: 1.5; }
+  .print-brand, .print-watermark { display: none; }
+  @media (max-width: 1080px) { .planner-grid { grid-template-columns: 1fr; } .planner-summary { min-height: auto; } }
+  @media (max-width: 850px) { .planner-intro { grid-template-columns: 1fr; gap: 22px; } .planner-head { display: none; } .planner-row { grid-template-columns: 1fr 1fr; gap: 12px; } .planner-row > :first-child { grid-column: 1 / -1; } .item-result { padding: 0; } .remove-item { justify-self: start; padding: 0 12px; } }
+  @media (max-width: 520px) { .planner-section { padding: 68px 0; } .planner-workspace { padding: 18px; } .planner-toolbar { align-items: flex-start; flex-direction: column; } .planner-toolbar div { justify-content: flex-start; } .planner-toolbar button, .planner-toolbar [data-slot="button"], .remove-item, .planner-row input, .planner-row select, .money-input { min-height: 44px; height: 44px; } .planner-row { grid-template-columns: 1fr; } .planner-row > :first-child { grid-column: auto; } .planner-summary { padding: 25px; } }
+  @media print { .planner-toolbar, .planner-status, .remove-item { display: none !important; } .planner-section { page: planner; padding: 0; background: var(--paper); border: 0; } .print-brand { display: flex; align-items: center; gap: 10px; margin: 0 0 7mm; padding-bottom: 4mm; border-bottom: 1px solid var(--line); } .print-brand img { width: 32px; height: 32px; object-fit: contain; } .print-brand strong, .print-brand span { display: block; } .print-brand strong { font-size: .92rem; letter-spacing: -.02em; } .print-brand span { margin-top: 2px; color: var(--muted); font-size: .68rem; } .planner-intro { display: block; margin: 0 0 6mm; } .planner-intro > p { display: none; } .planner-intro h2 { font-size: 1.8rem; } .planner-grid { display: block; border: 0; } .planner-workspace { overflow: visible; padding: 0; } .planner-head, .planner-row { display: grid !important; grid-template-columns: minmax(30mm, 1.25fr) repeat(5, minmax(19mm, .72fr)) minmax(28mm, .95fr) repeat(2, minmax(18mm, .62fr)); gap: 2mm; min-width: 0; } .planner-head { padding-bottom: 2mm; font-size: .56rem; } .planner-head span:last-child { display: none; } .planner-row { align-items: center; padding: 3mm 0; break-inside: avoid; } .planner-row label { grid-column: auto !important; color: var(--ink); font-size: 0; } .planner-row > label > input, .planner-row > label > select, .money-input { height: auto; min-height: 0; border: 0; padding: 0; background: transparent; box-shadow: none; font-size: .66rem; } .money-input b { padding-left: 0; font-size: .62rem; } .money-input input { padding: 0 0 0 1mm; font-size: .66rem; } .item-result { padding: 0; font-size: .66rem; } .item-result span { display: none; } .custom-rate { display: none !important; } .planner-row-warning { grid-column: 1 / -1 !important; font-size: .6rem; } .planner-summary { display: grid; grid-template-columns: .55fr 1fr; gap: 7mm; margin-top: 8mm; border-top: 2px solid var(--ink); padding: 6mm 0 0; background: var(--paper); color: var(--ink); } .planner-summary .eyebrow, .summary-copy, .planner-summary dt, .planner-note { color: var(--muted); } .planner-profit { color: var(--ink); font-size: 2.7rem; } .summary-copy { margin: 2mm 0 0; } .planner-summary dl { grid-column: 2; grid-row: 1 / span 3; border-color: var(--line); } .planner-summary dl div { border-color: var(--line); padding: 2mm 0; } .planner-note { margin-top: 2mm; } .print-watermark { display: inline-flex; align-items: center; gap: 7px; margin-top: 5mm; color: var(--muted); font-size: .68rem; text-decoration: none; } .print-watermark img { width: 18px; height: 18px; object-fit: contain; opacity: .72; } }
+</style>

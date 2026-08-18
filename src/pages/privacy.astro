@@ -1,0 +1,7 @@
+---
+import Breadcrumbs from "@/components/chrome/Breadcrumbs.astro"; import SiteFooter from "@/components/chrome/SiteFooter.astro"; import SiteHeader from "@/components/chrome/SiteHeader.astro"; import BaseLayout from "@/layouts/BaseLayout.astro";
+const title = "Privacy | Live Payout"; const description = "Privacy information for Live Payout.";
+const breadcrumbs = [{ name: "Home", path: "/" }, { name: "Privacy" }];
+---
+<BaseLayout {title} {description} canonicalPath="/privacy/" {breadcrumbs}><SiteHeader /><main class="legal shell"><Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Privacy" }]} /><p class="eyebrow">Privacy</p><h1>Privacy, plainly.</h1><p>Live Payout is currently a static informational site. The calculator does not require an account and does not ask you to submit financial information.</p><p>When analytics or email capture are added, this page will name the provider, purpose, and choices available to you before those services go live.</p></main><SiteFooter /></BaseLayout>
+<style>.legal{max-width:800px;padding-top:76px;padding-bottom:110px}.legal h1{margin:0 0 28px;font-size:clamp(3rem,7vw,5.8rem);line-height:.9;letter-spacing:-.08em}.legal p{max-width:650px;color:var(--muted);line-height:1.6}</style>

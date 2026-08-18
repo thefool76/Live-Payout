@@ -1,0 +1,18 @@
+<footer class="site-footer">
+  <div class="shell footer-grid">
+    <div><a class="wordmark" href="/"><img src="/brand/live-payout-icon.png" alt="" width="28" height="28" /><span>Live Payout</span></a><p>Clear payout math for live sellers.</p></div>
+    <nav aria-label="Footer navigation"><a href="/whatnot-seller-fees/">Fees explained</a><a href="/methodology/">Methodology</a><a href="/changelog/">Fee changelog</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav>
+    <p class="fine-print">Independent tool. Not affiliated with or endorsed by Whatnot. Fees can change; always confirm the current seller policy.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { padding: 42px 0; border-top: 1px solid var(--line); }
+  .footer-grid { display: grid; grid-template-columns: 1.1fr .8fr 1.25fr; gap: 32px; }
+  .wordmark { display: inline-flex; align-items: center; gap: 8px; font-size: 1.1rem; font-weight: 850; letter-spacing: -.06em; text-decoration: none; } .wordmark img { width: 28px; height: 28px; object-fit: contain; }
+  p { color: var(--muted); font-size: .82rem; line-height: 1.5; }
+  nav { display: grid; gap: 9px; }
+  nav a { color: var(--muted); font-size: .82rem; text-underline-offset: 3px; }
+  .fine-print { margin: 0; }
+  @media (max-width: 720px) { .footer-grid { grid-template-columns: 1fr; gap: 24px; } }
+</style>

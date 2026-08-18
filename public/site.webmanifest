@@ -1,0 +1,23 @@
+{
+  "name": "Live Payout Whatnot Fee Calculator",
+  "short_name": "Live Payout",
+  "description": "Estimate Whatnot seller fees, payout, profit, and target sale prices.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f2d84b",
+  "icons": [
+    {
+      "src": "/brand/live-payout-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/brand/live-payout-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,190 @@
+---
+import CalculatorPreview from "@/components/calculator/CalculatorPreview.astro";
+import SiteFooter from "@/components/chrome/SiteFooter.astro";
+import SiteHeader from "@/components/chrome/SiteHeader.astro";
+import ShowPlanner from "@/components/planner/ShowPlanner.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { ArrowDownRightIcon, CalculatorIcon, ChartNoAxesCombinedIcon, ReceiptTextIcon } from "lucide-react";
+
+const title = "Whatnot Fee Calculator 2026 | Profit & Payout";
+const description = "Free Whatnot fee calculator for US sellers. Estimate 2026 commission, processing fees, payout, profit, and the sale price needed for your target.";
+const faqs = [
+  {
+    question: "How much are Whatnot seller fees in the US?",
+    answer: "Under the US fee schedule checked on August 18, 2026, most categories use an 8% commission on the item's final sale price. Coins & Money and Pallets in Wholesale use limited-time 4% rates. Payment processing is generally 2.9% of the total order value plus $0.30. Selected collectibles currently receive 0% commission on the portion above $1,500; that treatment is limited-time and should be confirmed before a high-value sale.",
+  },
+  {
+    question: "How does this Whatnot fee calculator work?",
+    answer: "Enter the item's sale price, buyer-paid shipping, optional buyer-paid tax, seller-paid shipping, your item cost, and the relevant commission category. Live Payout calculates commission on the eligible sale-price base and processing on the buyer's total, then subtracts fees and seller-paid shipping from the item price. Add your item cost to see estimated profit, or switch modes to find the minimum sale price for a target profit.",
+  },
+  {
+    question: "Does Whatnot charge seller fees on shipping?",
+    answer: "Commission is based on the item's final sale price and excludes shipping and taxes. Payment processing uses total order value, which generally includes the item price, buyer-paid shipping, and buyer-paid tax. Buyer shipping therefore affects the processing fee even though it is not treated as seller revenue in this calculator.",
+  },
+  {
+    question: "What is the difference between Whatnot payout and profit?",
+    answer: "Estimated payout is the item sale price minus commission and payment-processing fees. Estimated profit goes one step further by subtracting what you paid for the item. Profit can still differ from your final business margin because fee taxes, seller-paid shipping adjustments, supplies, refunds, promotions, and overhead are not included.",
+  },
+  {
+    question: "How do Whatnot fees work on sales over $1,500?",
+    answer: "For selected US categories, Whatnot's current policy applies the category commission rate up to $1,500 and 0% commission to the portion above $1,500. Payment processing still applies to the total order value. The calculator applies this threshold only when you choose an eligible collectibles or Coins & Money option; otherwise it keeps the standard commission or your custom rate.",
+  },
+  {
+    question: "Is Live Payout affiliated with Whatnot?",
+    answer: "No. Live Payout is an independent estimation tool and is not affiliated with, endorsed by, or operated by Whatnot. The linked official fee policy and the terms shown in your seller account remain the authority for an actual transaction.",
+  },
+];
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": "https://livepayoutcalculator.com/#organization",
+    name: "Live Payout",
+    url: "https://livepayoutcalculator.com/",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://livepayoutcalculator.com/brand/live-payout-icon.png",
+      width: 1254,
+      height: 1254,
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://livepayoutcalculator.com/#website",
+    url: "https://livepayoutcalculator.com/",
+    name: "Live Payout",
+    alternateName: "Live Payout Calculator",
+    inLanguage: "en-US",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "@id": "https://livepayoutcalculator.com/#calculator",
+    name: "Whatnot Fee Calculator",
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    isAccessibleForFree: true,
+    description,
+    url: "https://livepayoutcalculator.com/",
+    featureList: ["Whatnot payout estimate", "Whatnot profit estimate", "Target sale price calculator", "Multi-item show planner"],
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    author: { "@id": "https://livepayoutcalculator.com/#organization" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": "https://livepayoutcalculator.com/#faq",
+    mainEntity: faqs.map(({ question, answer }) => ({
+      "@type": "Question",
+      name: question,
+      acceptedAnswer: { "@type": "Answer", text: answer },
+    })),
+  },
+];
+---
+
+<BaseLayout {title} {description} {schema} image="/og.png">
+  <SiteHeader />
+  <main>
+    <section class="hero">
+      <img class="hero-background" src="/images/collector-comics.webp" width="1600" height="1066" alt="" aria-hidden="true" fetchpriority="high" />
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Free US seller tool · checked 18 Aug 2026</p>
+          <h1>Whatnot fee calculator</h1>
+          <p class="hero-lede">Estimate Whatnot seller fees, payout, and profit before your show. Enter a sale price, buyer costs, and category to see what you may keep.</p>
+          <a class="button button--dark" href="#calculator"><CalculatorIcon aria-hidden="true" />Calculate your payout <ArrowDownRightIcon aria-hidden="true" /></a>
+          <dl class="hero-metrics" aria-label="What Live Payout helps you calculate">
+            <div><ReceiptTextIcon aria-hidden="true" /><dt>Fee clarity</dt><dd>Commission + processing</dd></div>
+            <div><ChartNoAxesCombinedIcon aria-hidden="true" /><dt>Profit first</dt><dd>Know your floor price</dd></div>
+          </dl>
+        </div>
+        <aside class="hero-preview" aria-label="Example payout breakdown">
+          <div class="preview-topline"><span>Quick payout view</span><span>Example</span></div>
+          <p class="preview-label">Estimated seller payout</p>
+          <output>$44.10</output>
+          <p class="preview-copy">From a $50.00 sale with $5.00 buyer shipping.</p>
+          <dl>
+            <div><dt>Commission</dt><dd>−$4.00</dd></div>
+            <div><dt>Processing</dt><dd>−$1.90</dd></div>
+            <div class="preview-total"><dt>Your item cost</dt><dd>−$20.00</dd></div>
+          </dl>
+          <p class="preview-profit">$24.10 <span>estimated profit</span></p>
+        </aside>
+      </div>
+      <img class="hero-sneaker" src="/images/props/gucci-sneaker.webp" width="447" height="559" alt="" aria-hidden="true" />
+    </section>
+    <CalculatorPreview />
+    <ShowPlanner />
+    <section class="why-section" aria-labelledby="why-title">
+      <div class="why shell">
+        <div class="why-title"><img class="why-card" src="/images/props/trading-card.webp" width="408" height="612" alt="A holographic trading card" loading="lazy" /><p class="eyebrow">Built for the moment before you list</p><h2 class="section-heading" id="why-title">A sale price is not a payout.</h2></div>
+        <div class="why-copy"><p>Commission, payment processing, shipping, and what you paid for the item all change the number you keep. Live Payout puts those lines in one place, so the result is explainable—not a black box.</p><a class="text-link" href="/whatnot-seller-fees/">See how Whatnot seller fees work</a></div>
+      </div>
+    </section>
+    <section class="market-context" aria-labelledby="inventory-title">
+      <div class="shell market-grid">
+        <div class="market-copy"><p class="eyebrow">One view, many categories</p><h2 class="section-heading" id="inventory-title">Price the item. Keep the margin visible.</h2><p>Sneakers, cards, comics, and everything between them have different costs. The payout rules should be easy to inspect every time.</p></div>
+        <figure class="streetwear-visual"><img src="/images/props/nike-sneaker.webp" width="559" height="447" alt="A white and orange sneaker" loading="lazy" /><figcaption>Every category starts with the same question: what do I keep?</figcaption></figure>
+      </div>
+    </section>
+    <section class="method" aria-labelledby="method-title"><div class="shell method-grid"><div class="method-lede"><p class="eyebrow">No mystery math</p><h2 class="section-heading" id="method-title">Every number has a source.</h2><img class="method-statue" src="/images/props/the-thinker.webp" width="433" height="577" alt="The Thinker statue" loading="lazy" /></div><ol><li><b>Start with the buyer’s total.</b><span>Item price plus buyer-paid shipping and optional buyer-paid tax.</span></li><li><b>Apply the fee schedule.</b><span>Commission and payment processing stay separate.</span></li><li><b>Subtract your own cost.</b><span>See estimated payout and item-level profit.</span></li></ol></div></section>
+    <section class="resource shell"><figure class="resource-visual"><img src="/images/methodology-workspace.webp" width="1280" height="1600" alt="A seller workspace with a calculator, receipt, and holographic card sleeve" loading="lazy" /></figure><div class="resource-copy"><p class="eyebrow">Before you rely on a calculator</p><h2 class="section-heading">Policies change. The assumptions should be visible.</h2><p>We keep a dated fee source on the tool and explain edge cases such as coins, custom rates, and high-value orders. Check the current policy if your account has a special rate.</p><a class="button button--light" href="/methodology/">Read the methodology</a></div></section>
+    <section class="seo-guide" aria-labelledby="guide-title" data-seo-content>
+      <div class="shell">
+        <div class="guide-heading">
+          <div><p class="eyebrow">Whatnot fees, explained</p><h2 class="section-heading" id="guide-title">Plan the payout—not just the sale.</h2></div>
+          <p>A strong auction result can still leave a weak margin. This free Whatnot fee calculator turns the fee schedule into a clear pre-show estimate so US sellers can price inventory with the payout and profit in view.</p>
+        </div>
+        <div class="guide-grid">
+          <article>
+            <h3>What the calculator estimates</h3>
+            <p>Live Payout calculates four numbers: the buyer total used for processing, estimated commission, estimated payment-processing fees, and the amount left from the item price. If you enter your acquisition cost, it also estimates item-level profit. The tool keeps payout and profit separate because they answer different questions. Payout is what may remain after platform fees; profit also accounts for the money already tied up in the item.</p>
+            <p>The calculator also works in reverse. Choose <a href="#calculator">Find sale price</a>, enter the profit you want, and it finds the lowest cent-level sale price that reaches that target under the selected assumptions. That makes it useful for setting an auction floor, reviewing a buy before sourcing it, or deciding whether a low-start auction leaves enough room.</p>
+          </article>
+          <article>
+            <h3>Whatnot seller fees used for 2026</h3>
+            <p>For US sellers, the official policy checked on August 18, 2026 lists an 8% commission for most categories, 4% for Coins & Money, and a limited-time 4% Pallets / Wholesale rate. Commission applies to the item’s final sale price, excluding shipping and taxes. Payment processing is generally 2.9% of total order value plus $0.30. Total order value normally includes the item price, buyer-paid shipping, and buyer-paid tax, so those buyer charges can increase processing without becoming seller revenue here.</p>
+            <p>Selected collectibles—including Comics, Trading Card Games, Sports Singles, and Toys & Hobbies—currently use 8% commission up to $1,500 and 0% on the portion above that threshold. Coins & Money currently uses the same threshold with its 4% rate. Whatnot labels this treatment limited-time. Read the detailed <a href="/whatnot-seller-fees/">Whatnot seller fee guide</a> and the <a href="/whatnot-high-value-order-fees/">high-value order explanation</a> before relying on it for an expensive item.</p>
+          </article>
+          <article>
+            <h3>How to calculate a Whatnot payout</h3>
+            <p>Start with the expected final sale price rather than the retail value. Add buyer-paid shipping and tax when you know them because they affect processing. Select the category whose fee treatment actually matches the listing, then add your inventory cost if you want profit rather than payout alone. The result card keeps commission and processing on separate lines so you can audit the estimate instead of trusting a single unexplained percentage.</p>
+            <p>For example, a $50 item with $5 buyer shipping, no entered tax, and an 8% commission produces $4.00 commission and $1.90 processing under the displayed schedule. The estimated payout is $44.10. If the item cost $20, estimated item-level profit is $24.10. Your settlement can differ when promotions, refunds, fee taxes, seller-paid shipping, or account-specific terms apply.</p>
+          </article>
+          <article>
+            <h3>Use the show planner for a mixed inventory</h3>
+            <p>A live show rarely contains one item. The <a href="#show-planner">Whatnot show planner</a> lets you list expected sales, costs, buyer shipping, and commission treatment item by item. It totals estimated sales, fees, payout, and profit, and it flags how many items remain profitable. Plans stay in your browser unless you export the CSV, which makes the feature useful for a quick run sheet without creating an account.</p>
+            <p>Treat the forecast as a decision aid, not an accounting record. Bid outcomes vary, and a profitable-looking show can still be weakened by packaging, labor, giveaways, returns, or overhead. Review the exact <a href="/methodology/">calculation methodology</a>, confirm your seller terms, and recheck the dated <a href="/changelog/">fee-model changelog</a> when Whatnot updates its policy.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="faq-section" aria-labelledby="faq-title" data-seo-content>
+      <div class="shell faq-layout">
+        <div class="faq-heading"><p class="eyebrow">Seller questions</p><h2 class="section-heading" id="faq-title">Whatnot fee calculator FAQ</h2><p>Short answers based on the US policy checked August 18, 2026. Open each answer for the assumptions that matter.</p></div>
+        <div class="faq-list">
+          {faqs.map(({ question, answer }) => <details><summary>{question}</summary><p>{answer}</p></details>)}
+        </div>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .hero { position: relative; isolation: isolate; overflow: hidden; padding: clamp(54px, 8vw, 104px) 0 72px; background: var(--ink); color: var(--paper); } .hero::before { position: absolute; z-index: -1; inset: 0; background: rgb(0 0 0 / 68%); content: ""; } .hero-background { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 38%; }
+  .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, .78fr); align-items: stretch; gap: clamp(28px, 5vw, 72px); } h1 { max-width: 730px; margin: 0; font-size: clamp(3.25rem, 7vw, 6.25rem); line-height: .88; letter-spacing: -.085em; } .hero .eyebrow { color: var(--accent); } .hero-copy { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 18px 0; } .hero-lede { max-width: 430px; margin: 25px 0; color: #f1efeb; font-size: 1.08rem; line-height: 1.45; } .hero-copy .button { gap: 9px; background: var(--accent); color: var(--ink); border-color: var(--accent); } .hero-copy .button svg { width: 17px; height: 17px; transition: transform 180ms ease; } .hero-copy .button:hover svg:last-child { transform: translate(2px, 2px); } .hero-metrics { display: flex; flex-wrap: wrap; gap: 26px; margin: 36px 0 0; } .hero-metrics div { display: grid; grid-template-columns: 20px auto; column-gap: 8px; } .hero-metrics svg { grid-row: span 2; width: 18px; height: 18px; color: var(--accent); } .hero-metrics dt { font-size: .77rem; font-weight: 850; } .hero-metrics dd { margin: 3px 0 0; color: #d7d5d2; font-size: .72rem; }
+  .hero-preview { display: flex; flex-direction: column; min-height: 460px; margin: 0; padding: clamp(26px, 4vw, 42px); background: rgb(23 21 21 / 94%); color: var(--paper); border: 1px solid rgb(255 255 255 / 32%); } .preview-topline { display: flex; justify-content: space-between; gap: 12px; color: #d7d5d2; font-size: .68rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; } .preview-label { margin: auto 0 9px; color: #d7d5d2; font-size: .78rem; } .hero-preview output { color: var(--accent); font-size: clamp(3.3rem, 5vw, 4.8rem); font-weight: 850; line-height: .9; letter-spacing: -.08em; } .preview-copy { max-width: 280px; margin: 15px 0 25px; color: #d7d5d2; font-size: .82rem; line-height: 1.45; } .hero-preview dl { margin: 0; border-top: 1px solid #484544; } .hero-preview dl div { display: flex; justify-content: space-between; gap: 16px; padding: 11px 0; border-bottom: 1px solid #484544; font-size: .77rem; } .hero-preview dt { color: #d7d5d2; } .hero-preview dd { margin: 0; font-weight: 800; } .hero-preview .preview-total { border-bottom: 0; } .preview-profit { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; margin: 19px 0 0; font-size: 1.1rem; font-weight: 850; } .preview-profit span { color: #d7d5d2; font-size: .72rem; font-weight: 700; } .hero-sneaker { position: absolute; z-index: 0; right: max(-7vw, -92px); bottom: -76px; width: min(31vw, 420px); height: auto; transform: rotate(-10deg); pointer-events: none; }
+  .why-section { position: relative; z-index: 1; overflow: hidden; background: var(--accent); } .why { display: grid; grid-template-columns: 1.1fr .8fr; gap: 68px; min-height: 500px; padding: 112px 0; } .why-title { position: relative; display: flex; flex-direction: column; justify-content: center; min-height: 352px; isolation: isolate; } .why-title::after { position: absolute; z-index: 0; inset: 8% 4% 5% -9%; background: linear-gradient(90deg, rgb(23 21 21 / 74%) 0%, rgb(23 21 21 / 47%) 54%, transparent 100%); content: ""; pointer-events: none; } .why-title .eyebrow, .why-title h2 { position: relative; z-index: 1; } .why-title .eyebrow { color: var(--accent); text-shadow: 0 1px 10px rgb(23 21 21 / 85%); } .why h2 { max-width: 590px; margin: 0; color: var(--paper); font-size: clamp(3rem, 5.1vw, 5rem); line-height: .9; letter-spacing: -.07em; text-shadow: 0 2px 16px rgb(23 21 21 / 90%); } .why-copy { position: relative; z-index: 1; align-self: center; max-width: 390px; } .why-copy p { margin: 0 0 21px; color: #35322d; font-size: 1rem; line-height: 1.55; } .why-copy a { font-size: .88rem; font-weight: 800; } .why-card { position: absolute; z-index: -1; left: -20px; bottom: -170px; width: min(89%, 475px); height: auto; transform: rotate(-9deg); filter: drop-shadow(16px 20px 0 rgb(23 21 21 / 22%)); }
+  .market-context { border-top: 1px solid var(--ink); background: #292724; color: var(--paper); } .market-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(320px, .8fr); gap: clamp(32px, 7vw, 94px); align-items: center; min-height: 460px; padding: 94px 0; } .market-context .eyebrow { color: var(--accent); } .market-copy h2 { margin: 0 0 20px; } .market-copy > p:last-of-type { max-width: 470px; margin: 0; color: #d7d5d2; line-height: 1.55; } .streetwear-visual { position: relative; min-height: 360px; margin: 0; overflow: hidden; border: 1px solid #5d5954; background: #f5f5f2; } .streetwear-visual img { position: absolute; right: -8%; bottom: -7%; display: block; width: 112%; height: auto; transform: rotate(-6deg); } .streetwear-visual figcaption { position: absolute; right: 0; bottom: 0; left: 0; padding: 13px 16px; background: var(--accent); color: var(--ink); font-size: .72rem; font-weight: 800; }
+  .method { overflow-x: clip; padding: 94px 0; border-top: 1px solid var(--line); background: var(--surface); } .method-grid { display: grid; grid-template-columns: 1fr .8fr; gap: 68px; } .method-lede { position: relative; min-height: 310px; isolation: isolate; } .method-lede .eyebrow, .method h2 { position: relative; z-index: 1; } .method h2 { max-width: 540px; margin: 0; } .method-statue { position: absolute; z-index: 0; right: -30px; bottom: -100px; width: min(86%, 430px); height: auto; opacity: .36; filter: grayscale(1) contrast(1.08); pointer-events: none; } ol { position: relative; z-index: 1; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); } li { display: grid; gap: 5px; padding: 20px 0; border-bottom: 1px solid var(--line); } li b { font-size: .97rem; } li span { color: var(--muted); font-size: .86rem; line-height: 1.4; }
+  .resource { display: grid; grid-template-columns: minmax(0, .76fr) minmax(0, 1fr); gap: clamp(38px, 7vw, 94px); align-items: center; padding: 110px 0; } .resource-visual, .resource-copy { min-width: 0; } .resource-visual { position: relative; height: 470px; margin: 0; overflow: hidden; background: var(--ink); } .resource-visual img { display: block; width: 100%; max-width: 100%; height: 100%; object-fit: cover; object-position: center; } .resource h2 { margin: 0 0 21px; } .resource-copy > p:not(.eyebrow) { max-width: 460px; margin: 0 0 26px; color: var(--muted); line-height: 1.52; }
+  .seo-guide { padding: 108px 0; border-top: 1px solid var(--ink); background: var(--paper); } .guide-heading { display: grid; grid-template-columns: 1fr .72fr; gap: clamp(32px, 7vw, 90px); align-items: end; margin-bottom: 64px; } .guide-heading h2 { max-width: 620px; margin: 0; } .guide-heading > p { max-width: 470px; margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.62; } .guide-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); border-left: 1px solid var(--line); } .guide-grid article { padding: clamp(26px, 4vw, 44px); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); } .guide-grid h3 { margin: 0 0 18px; font-size: clamp(1.3rem, 2vw, 1.7rem); letter-spacing: -.035em; } .guide-grid p { margin: 0 0 16px; color: #403d38; line-height: 1.7; } .guide-grid p:last-child { margin-bottom: 0; } .guide-grid a { color: var(--ink); font-weight: 800; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  .faq-section { padding: 108px 0; background: var(--ink); color: var(--paper); } .faq-layout { display: grid; grid-template-columns: minmax(250px, .68fr) minmax(0, 1.32fr); gap: clamp(42px, 8vw, 110px); align-items: start; } .faq-heading { position: sticky; top: 92px; } .faq-heading .eyebrow { color: var(--accent); } .faq-heading h2 { margin: 0 0 22px; } .faq-heading > p:last-child { max-width: 360px; margin: 0; color: #c8c5c0; line-height: 1.6; } .faq-list { border-top: 1px solid #4d4945; } .faq-list details { border-bottom: 1px solid #4d4945; } .faq-list summary { position: relative; padding: 24px 48px 24px 0; cursor: pointer; list-style: none; font-size: 1rem; font-weight: 850; line-height: 1.35; } .faq-list summary::-webkit-details-marker { display: none; } .faq-list summary::after { position: absolute; top: 22px; right: 4px; color: var(--accent); content: "+"; font-size: 1.35rem; font-weight: 500; } .faq-list details[open] summary::after { content: "−"; } .faq-list details p { max-width: 690px; margin: -2px 48px 25px 0; color: #d2cfca; line-height: 1.68; }
+  @media (max-width: 900px) { .hero-grid, .market-grid { grid-template-columns: 1fr; } .hero-preview { min-height: auto; } .hero-sneaker { right: -54px; width: 290px; } .market-grid { gap: 34px; } }
+  @media (max-width: 760px) { .hero-grid, .why, .method-grid, .resource, .guide-heading, .faq-layout { grid-template-columns: 1fr; gap: 29px; } .hero { padding-bottom: 46px; } .hero-sneaker { right: -56px; bottom: -58px; width: 235px; opacity: .76; } .hero-metrics { margin-top: 30px; } .market-grid, .why, .resource { padding: 68px 0; } .why { min-height: 0; } .why-title { min-height: 340px; } .why-title::after { inset: 6% 0 4% -7%; background: linear-gradient(90deg, rgb(23 21 21 / 76%) 0%, rgb(23 21 21 / 46%) 72%, transparent 100%); } .why-copy { max-width: 520px; } .why-card { left: -16px; bottom: -158px; width: min(82vw, 390px); } .market-grid { min-height: auto; } .streetwear-visual, .resource-visual { min-height: 300px; } .method { padding: 68px 0; } .method-lede { min-height: 265px; } .method-statue { right: -8px; bottom: -88px; width: min(72vw, 340px); opacity: .32; } .seo-guide, .faq-section { padding: 72px 0; } .guide-heading { margin-bottom: 38px; } .guide-grid { grid-template-columns: 1fr; } .faq-heading { position: static; } }
+  @media (max-width: 480px) { .hero { padding-top: 48px; } .hero-preview { padding: 24px; } .hero-preview output { font-size: 3.25rem; } .hero-sneaker { display: none; } .why-title { min-height: 310px; } .why h2 { max-width: 340px; font-size: clamp(2.75rem, 13vw, 3.35rem); } .why-card { left: -5px; bottom: -132px; width: min(85vw, 320px); } .streetwear-visual, .resource-visual { min-height: 235px; } .method-lede { min-height: 220px; } .method-statue { right: -25px; bottom: -75px; width: 250px; } }
+</style>

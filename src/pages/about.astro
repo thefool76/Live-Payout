@@ -1,0 +1,51 @@
+---
+import Breadcrumbs from "@/components/chrome/Breadcrumbs.astro";
+import SiteFooter from "@/components/chrome/SiteFooter.astro";
+import SiteHeader from "@/components/chrome/SiteHeader.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const title = "About Live Payout | Independent Seller Fee Tool";
+const description = "How Live Payout maintains its independent Whatnot fee calculator, verifies fee assumptions, and keeps seller-facing estimates transparent.";
+const breadcrumbs = [{ name: "Home", path: "/" }, { name: "About" }];
+---
+
+<BaseLayout {title} {description} canonicalPath="/about/" pageType="AboutPage" {breadcrumbs}>
+  <SiteHeader />
+  <main class="about shell">
+    <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "About" }]} />
+    <p class="eyebrow">About Live Payout</p>
+    <h1>Clear math, visible assumptions.</h1>
+    <p class="lede">Live Payout is an independent calculator for sellers who want to estimate fees, payout, and item-level profit before a Whatnot show.</p>
+    <div class="content">
+      <section>
+        <h2>Why this tool exists</h2>
+        <p>A sale price is not the same as a payout. Live Payout keeps commission, payment processing, buyer costs, and inventory cost on separate lines so sellers can inspect the estimate instead of trusting an unexplained percentage.</p>
+      </section>
+      <section>
+        <h2>How fee information is maintained</h2>
+        <p>The calculator links to Whatnot’s published seller-fee policy, displays the date its assumptions were checked, and records material model changes in a public changelog. The <a href="/methodology/">methodology</a> explains both the calculation and its exclusions.</p>
+      </section>
+      <section>
+        <h2>Independence and limits</h2>
+        <p>Live Payout is not affiliated with or endorsed by Whatnot. It is an educational estimate, not a settlement statement or financial, tax, legal, or platform-policy advice. A seller’s account terms and the current official policy remain authoritative.</p>
+      </section>
+      <section>
+        <h2>What gets updated</h2>
+        <p>When a material fee rule changes, the fee schedule, calculator copy, methodology, checked date, and <a href="/changelog/">fee changelog</a> are reviewed together.</p>
+      </section>
+    </div>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .about { max-width: 800px; padding-top: 58px; padding-bottom: 110px; }
+  h1 { max-width: 720px; margin: 0; font-size: clamp(3rem, 7vw, 5.8rem); line-height: .9; letter-spacing: -.08em; }
+  .lede { max-width: 630px; margin: 28px 0 58px; color: var(--muted); font-size: 1.15rem; line-height: 1.48; }
+  .content { border-top: 1px solid var(--line); }
+  section { padding: 34px 0; border-bottom: 1px solid var(--line); }
+  h2 { margin: 0 0 13px; font-size: 1.45rem; letter-spacing: -.04em; }
+  p { color: var(--muted); line-height: 1.6; }
+  a { color: var(--ink); font-weight: 750; text-underline-offset: 3px; }
+  @media (max-width: 640px) { .about { padding-top: 34px; padding-bottom: 70px; } }
+</style>

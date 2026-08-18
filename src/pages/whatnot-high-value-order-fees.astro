@@ -1,0 +1,25 @@
+---
+import Breadcrumbs from "@/components/chrome/Breadcrumbs.astro";
+import SiteFooter from "@/components/chrome/SiteFooter.astro";
+import SiteHeader from "@/components/chrome/SiteHeader.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+const title = "Whatnot High-Value Order Fees | Live Payout";
+const description = "What US Whatnot sellers should check when pricing eligible high-value orders.";
+const sourceUrl = "https://help.whatnot.com/hc/en-us/articles/4847069165965-Whatnot-seller-fees";
+const breadcrumbs = [{ name: "Home", path: "/" }, { name: "High-value order fees" }];
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": "https://livepayoutcalculator.com/whatnot-high-value-order-fees/#article",
+  headline: "Whatnot high-value order fees need a second look",
+  description,
+  image: "https://livepayoutcalculator.com/og.png",
+  datePublished: "2026-08-18",
+  dateModified: "2026-08-18",
+  mainEntityOfPage: { "@id": "https://livepayoutcalculator.com/whatnot-high-value-order-fees/#webpage" },
+  author: { "@type": "Organization", "@id": "https://livepayoutcalculator.com/#organization", name: "Live Payout", url: "https://livepayoutcalculator.com/" },
+  publisher: { "@type": "Organization", "@id": "https://livepayoutcalculator.com/#organization", name: "Live Payout", url: "https://livepayoutcalculator.com/", logo: { "@type": "ImageObject", url: "https://livepayoutcalculator.com/brand/live-payout-icon.png", width: 1254, height: 1254 } },
+};
+---
+<BaseLayout {title} {description} canonicalPath="/whatnot-high-value-order-fees/" {schema} {breadcrumbs}><SiteHeader /><main class="guide shell"><Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "High-value order fees" }]} /><p class="eyebrow">US seller guide · checked 18 Aug 2026</p><h1>High-value order fees need a second look.</h1><p class="lede">Selected US categories currently receive 0% commission on the portion of an item’s final sale price above $1,500. That can make a material difference to the price you list.</p><section><h2>Do not assume every expensive item qualifies</h2><p>The current treatment covers Comics, Trading Card Games, Sports Singles, Toys & Hobbies, and Coins & Money. Other categories keep their published commission across the sale price unless your account terms say otherwise. Whatnot describes the threshold treatment as limited-time, so confirm it before listing.</p></section><section><h2>Only the portion above $1,500 changes</h2><p>For an eligible $2,000 collectible at 8%, commission is calculated on the first $1,500, producing $120 commission. It is not 0% on the whole sale. Coins & Money uses its 4% rate on the first $1,500 under the current policy.</p></section><section><h2>Processing still applies</h2><p>The change concerns commission, not payment processing. Processing generally remains 2.9% of total order value plus $0.30, including buyer-paid shipping and tax in the normal US calculation.</p></section><section><h2>Keep the proof with the price</h2><p>For a high-value item, write down the category, source cost, and policy date used for the estimate. It makes later pricing review much easier.</p></section><p class="source">Read the current <a href={sourceUrl} target="_blank" rel="noreferrer">Whatnot seller-fee policy ↗</a> before listing.</p></main><SiteFooter /></BaseLayout>
+<style>.guide{max-width:800px;padding-top:76px;padding-bottom:110px}h1{margin:0;font-size:clamp(3rem,7vw,5.8rem);line-height:.9;letter-spacing:-.08em}.lede{max-width:630px;margin:28px 0 58px;color:var(--muted);font-size:1.15rem;line-height:1.48}section{padding:34px 0;border-top:1px solid var(--line)}h2{margin:0 0 13px;font-size:1.45rem;letter-spacing:-.04em}p{color:var(--muted);line-height:1.6}a{color:var(--ink);font-weight:750;text-underline-offset:3px}.source{border-top:1px solid var(--line);padding-top:28px}@media(max-width:640px){.guide{padding-top:48px;padding-bottom:70px}}</style>
