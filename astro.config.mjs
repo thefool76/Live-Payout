@@ -8,6 +8,7 @@ const lastModified = new Map([
   ["/", "2026-08-18"],
   ["/about/", "2026-08-18"],
   ["/changelog/", "2026-08-18"],
+  ["/contact/", "2026-08-18"],
   ["/methodology/", "2026-08-18"],
   ["/privacy/", "2026-08-18"],
   ["/terms/", "2026-08-18"],

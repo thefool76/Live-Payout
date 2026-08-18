@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { Toaster } from "@/components/ui/sonner";
 
 interface Props {
   title: string;
@@ -105,5 +106,5 @@ const schemas = [pageSchema, breadcrumbSchema, ...suppliedSchemas].filter(Boolea
     <title>{title}</title>
     {schemas.map((item) => <script is:inline type="application/ld+json" set:html={JSON.stringify(item)} />)}
   </head>
-  <body><slot /></body>
+  <body><slot /><Toaster client:load position="bottom-right" closeButton /></body>
 </html>

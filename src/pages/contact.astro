@@ -1,0 +1,42 @@
+---
+import { FeatureRequestButton } from "@/components/contact/FeatureRequestButton";
+import Breadcrumbs from "@/components/chrome/Breadcrumbs.astro";
+import SiteFooter from "@/components/chrome/SiteFooter.astro";
+import SiteHeader from "@/components/chrome/SiteHeader.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const email = "hello@livepayoutcalculator.com";
+const title = "Contact Live Payout | Questions & Feature Requests";
+const description = "Contact Live Payout with a calculator question, correction, or feature request for the Whatnot seller fee tool.";
+const breadcrumbs = [{ name: "Home", path: "/" }, { name: "Contact" }];
+---
+
+<BaseLayout {title} {description} canonicalPath="/contact/" {breadcrumbs}>
+  <SiteHeader />
+  <main class="contact shell">
+    <Breadcrumbs items={[{ name: "Home", href: "/" }, { name: "Contact" }]} />
+    <p class="eyebrow">Contact</p>
+    <h1>Questions, corrections, or a better idea?</h1>
+    <p class="lede">Live Payout is built to make pre-show pricing clearer. If you spot a fee detail that needs checking or have a feature that would help sellers, send a note.</p>
+    <section class="contact-card" aria-labelledby="email-heading">
+      <p class="eyebrow">Email us</p>
+      <h2 id="email-heading">Start a conversation.</h2>
+      <a class="email-link" href={`mailto:${email}`}>{email}</a>
+      <p>For feature requests, include the workflow you are trying to improve and what result you expected.</p>
+      <FeatureRequestButton client:load />
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .contact { max-width: 800px; padding-top: 58px; padding-bottom: 110px; }
+  h1 { max-width: 760px; margin: 0; font-size: clamp(3rem, 7vw, 5.8rem); line-height: .9; letter-spacing: -.08em; }
+  .lede { max-width: 650px; margin: 28px 0 58px; color: var(--muted); font-size: 1.15rem; line-height: 1.5; }
+  .contact-card { display: grid; justify-items: start; gap: 15px; padding: clamp(26px, 5vw, 42px); border: 1px solid var(--ink); background: var(--surface); }
+  .contact-card .eyebrow { margin: 0; }
+  h2 { margin: 0; font-size: clamp(1.8rem, 4vw, 2.8rem); letter-spacing: -.055em; }
+  .email-link { color: var(--ink); font-size: clamp(1.15rem, 3vw, 1.55rem); font-weight: 850; letter-spacing: -.04em; text-underline-offset: 4px; }
+  .contact-card > p:not(.eyebrow) { max-width: 570px; margin: 0; color: var(--muted); line-height: 1.55; }
+  @media (max-width: 640px) { .contact { padding-top: 34px; padding-bottom: 70px; } }
+</style>

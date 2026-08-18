@@ -1,8 +1,12 @@
+---
+import { FeatureRequestButton } from "@/components/contact/FeatureRequestButton";
+---
+
 <footer class="site-footer">
   <div class="shell footer-grid">
     <div><a class="wordmark" href="/"><img src="/brand/live-payout-icon.png" alt="" width="28" height="28" /><span>Live Payout</span></a><p>Clear payout math for live sellers.</p></div>
-    <nav aria-label="Footer navigation"><a href="/whatnot-seller-fees/">Fees explained</a><a href="/methodology/">Methodology</a><a href="/changelog/">Fee changelog</a><a href="/about/">About</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav>
-    <p class="fine-print">Independent tool. Not affiliated with or endorsed by Whatnot. Fees can change; always confirm the current seller policy.</p>
+    <nav aria-label="Footer navigation"><a href="/whatnot-seller-fees/">Fees explained</a><a href="/methodology/">Methodology</a><a href="/changelog/">Fee changelog</a><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav>
+    <div class="footer-actions"><p class="fine-print">Independent tool. Not affiliated with or endorsed by Whatnot. Fees can change; always confirm the current seller policy.</p><FeatureRequestButton client:load /></div>
   </div>
 </footer>
 
@@ -14,5 +18,6 @@
   nav { display: grid; gap: 9px; }
   nav a { color: var(--muted); font-size: .82rem; text-underline-offset: 3px; }
   .fine-print { margin: 0; }
+  .footer-actions { display: grid; justify-items: start; gap: 15px; }
   @media (max-width: 720px) { .footer-grid { grid-template-columns: 1fr; gap: 24px; } }
 </style>
