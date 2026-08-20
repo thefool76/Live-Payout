@@ -5,7 +5,7 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 
 const lastModified = new Map([
-  ["/", "2026-08-18"],
+  ["/", "2026-08-20"],
   ["/about/", "2026-08-18"],
   ["/changelog/", "2026-08-18"],
   ["/contact/", "2026-08-18"],
@@ -17,7 +17,7 @@ const lastModified = new Map([
 ]);
 
 export default defineConfig({
-  site: "https://livepayoutcalculator.com",
+  site: "https://www.livepayoutcalculator.com",
   output: "static",
   integrations: [sitemap({
     serialize(item) {
