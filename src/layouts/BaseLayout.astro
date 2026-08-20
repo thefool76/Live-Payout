@@ -38,7 +38,10 @@ const {
 const site = Astro.site ?? new URL("https://www.livepayoutcalculator.com");
 const canonical = new URL(canonicalPath, site).href;
 const imageUrl = image ? new URL(image, site).href : undefined;
-const suppliedSchemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+const rawSuppliedSchemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+const suppliedSchemas = rawSuppliedSchemas.map((item) => JSON.parse(
+  JSON.stringify(item).replaceAll("https://livepayoutcalculator.com", "https://www.livepayoutcalculator.com"),
+));
 const suppliedArticle = suppliedSchemas.find((item) => item["@type"] === "Article");
 const resolvedOgType = ogType ?? (suppliedArticle ? "article" : "website");
 const resolvedPublishedDate = publishedDate ?? (typeof suppliedArticle?.datePublished === "string" ? suppliedArticle.datePublished : undefined);
