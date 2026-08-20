@@ -35,7 +35,7 @@ const {
   publishedDate,
   modifiedDate,
 }: Props = Astro.props;
-const site = Astro.site ?? new URL("https://livepayoutcalculator.com");
+const site = Astro.site ?? new URL("https://www.livepayoutcalculator.com");
 const canonical = new URL(canonicalPath, site).href;
 const imageUrl = image ? new URL(image, site).href : undefined;
 const suppliedSchemas = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
@@ -52,7 +52,7 @@ const pageSchema = isIndexable ? {
   name: title,
   description,
   inLanguage: "en-US",
-  isPartOf: { "@id": "https://livepayoutcalculator.com/#website" },
+  isPartOf: { "@id": "https://www.livepayoutcalculator.com/#website" },
   primaryImageOfPage: imageUrl ? { "@type": "ImageObject", url: imageUrl, width: imageWidth, height: imageHeight } : undefined,
 } : undefined;
 const breadcrumbSchema = isIndexable && breadcrumbs.length > 1 ? {
