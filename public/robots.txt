@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://livepayoutcalculator.com/sitemap-index.xml
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: GPTBot
+Disallow: /
+
+Sitemap: https://www.livepayoutcalculator.com/sitemap-index.xml
