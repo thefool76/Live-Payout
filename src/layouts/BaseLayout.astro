@@ -109,5 +109,107 @@ const schemas = [pageSchema, breadcrumbSchema, ...suppliedSchemas].filter(Boolea
     <title>{title}</title>
     {schemas.map((item) => <script is:inline type="application/ld+json" set:html={JSON.stringify(item)} />)}
   </head>
-  <body><slot /><Toaster client:load position="bottom-right" closeButton /></body>
+  <body>
+    <slot />
+    <Toaster client:load position="bottom-right" closeButton />
+    <script is:inline>
+      (() => {
+        const sendAnalyticsEvent = (name, params = {}) => {
+          const payload = {
+            ...params,
+            page_path: window.location.pathname,
+          };
+
+          if (typeof window.gtag === "function") {
+            window.gtag("event", name, payload);
+            return;
+          }
+
+          if (window.zaraz && typeof window.zaraz.track === "function") {
+            window.zaraz.track(name, payload);
+            return;
+          }
+
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: name, ...payload });
+        };
+
+        const calculator = document.querySelector("[data-calculator]");
+        if (calculator) {
+          let calculatorStarted = false;
+          let resultTimer;
+
+          const calculatorContext = () => {
+            const selectedMode = calculator.querySelector("[data-mode].is-selected")?.dataset.mode || "payout";
+            const category = calculator.querySelector("[data-input='category']")?.value || "unknown";
+            return { calculator_mode: selectedMode, category };
+          };
+
+          const markCalculatorStart = () => {
+            if (calculatorStarted) return;
+            calculatorStarted = true;
+            sendAnalyticsEvent("calculator_start", calculatorContext());
+          };
+
+          const scheduleResult = () => {
+            markCalculatorStart();
+            window.clearTimeout(resultTimer);
+            resultTimer = window.setTimeout(() => {
+              const context = calculatorContext();
+              sendAnalyticsEvent(
+                context.calculator_mode === "price" ? "find_sale_price_result" : "calculator_result",
+                context,
+              );
+            }, 700);
+          };
+
+          calculator.addEventListener("input", scheduleResult);
+          calculator.addEventListener("change", scheduleResult);
+          calculator.addEventListener("click", (event) => {
+            const target = event.target instanceof Element ? event.target : null;
+            if (!target) return;
+
+            if (target.closest("[data-mode]")) scheduleResult();
+            if (target.closest("[data-share]")) sendAnalyticsEvent("calculator_share", calculatorContext());
+            if (target.closest("[data-print]")) sendAnalyticsEvent("calculator_print", calculatorContext());
+
+            const link = target.closest("a");
+            if (link && link.href.includes("help.whatnot.com")) {
+              sendAnalyticsEvent("official_source_click", { source: "calculator" });
+            }
+          });
+        }
+
+        const planner = document.querySelector("[data-show-planner]");
+        if (planner) {
+          let plannerStarted = false;
+          const markPlannerStart = () => {
+            if (plannerStarted) return;
+            plannerStarted = true;
+            sendAnalyticsEvent("show_planner_start");
+          };
+
+          planner.addEventListener("input", markPlannerStart);
+          planner.addEventListener("change", markPlannerStart);
+          planner.addEventListener("click", (event) => {
+            const target = event.target instanceof Element ? event.target : null;
+            if (!target) return;
+
+            if (target.closest("[data-add-item]")) {
+              markPlannerStart();
+              sendAnalyticsEvent("show_planner_item_added");
+            }
+            if (target.closest("[data-export]")) {
+              markPlannerStart();
+              sendAnalyticsEvent("show_planner_export");
+            }
+            if (target.closest("[data-print-plan]")) {
+              markPlannerStart();
+              sendAnalyticsEvent("show_planner_print");
+            }
+          });
+        }
+      })();
+    </script>
+  </body>
 </html>
